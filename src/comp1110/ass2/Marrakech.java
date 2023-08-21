@@ -1,7 +1,22 @@
 package comp1110.ass2;
 
-public class Marrakech {
+import java.util.ArrayList;
 
+public class Marrakech {
+    private char[][] squareColor = new char[7][7];
+    private ArrayList<Player> playerList = new ArrayList<Player>();
+
+    //check how many same color rugs are connected with the given coordinate.
+    public int connectedRugs (int x, int y){
+        //TODO
+        return 1;
+    }
+
+
+    // initialise game and add players
+    public void startGame () {
+        //TODO
+    }
     /**
      * Determine whether a rug String is valid.
      * For this method, you need to determine whether the rug String is valid, but do not need to determine whether it
