@@ -12,25 +12,26 @@ public class Assam {
     private int y;
     Direction dir; 
 
-    public Assam{
+    public Assam(){
 
     }
 
     public int getX(){
-        return this.x
+        return this.x;
     }
 
     public int getY(){
-        return this.y
+        return this.y;
     }
 
     public Direction getDirection() {
-        return this.dir
+        return this.dir;
     }
 
     public void changeDirection(Direction d){
 
     }
 
-    public void move(int steps)
+    public void move(int steps){
+    }
 }

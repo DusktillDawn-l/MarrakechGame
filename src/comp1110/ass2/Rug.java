@@ -8,7 +8,9 @@ public class Rug {
     private int y2;
     
     // Constructor
-    public Rug(int x1, int y1, int x2, int y2, char color)
+    public Rug(int x1, int y1, int x2, int y2, char color){
+
+    }
     
     //getters
 
