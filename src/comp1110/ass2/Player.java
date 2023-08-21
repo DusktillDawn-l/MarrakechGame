@@ -32,7 +32,7 @@ public class Player {
         return rugAvailable;
     }
 
-    public void useRug() {
+    public void placeRug() {
         rugAvailable--;
     }
     /**
