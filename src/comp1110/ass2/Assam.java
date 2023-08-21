@@ -10,11 +10,14 @@ enum Direction {
 public class Assam {
     private int x;
     private int y;
-    Direction dir; 
+    Direction dir;
 
-    public Assam(){
-
+    public Assam(int x, int y, Direction dir) {
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
     }
+
 
     public int getX(){
         return this.x;
