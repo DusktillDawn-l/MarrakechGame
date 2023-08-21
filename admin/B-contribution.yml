@@ -10,7 +10,7 @@ declaration: >-
 contributions:
   - uid: u7611510
     contribution: 
-  - uid:
+  - uid: u7706930
     contribution:
   - uid:
     contribution:
@@ -20,7 +20,7 @@ contributions:
 signatures:
   - name: Heng Sun
     uid: u7611510
-  - name:
-    uid:
+  - name: Yanbai Jin
+    uid: u7706930
   - name:
     uid:
