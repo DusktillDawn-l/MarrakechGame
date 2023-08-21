@@ -29,9 +29,10 @@ public class Assam {
     }
 
     public void changeDirection(Direction d){
-
+        return;
     }
 
     public void move(int steps){
+        return;
     }
 }
