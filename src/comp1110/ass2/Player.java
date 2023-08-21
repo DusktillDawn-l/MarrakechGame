@@ -1,7 +1,7 @@
 package comp1110.ass2;
 
 public class Player {
-    private char colour;
+    private final char colour;
     private int dirhams;	//the currency in use in this game
     private int rugAvailable; //Each player starts the game with 15 rugs
     private boolean inGame;
@@ -37,9 +37,8 @@ public class Player {
     }
     /**
      *
-     * @param anotherPlayerColour the colour of another player you need to pay
+     * @param anotherPlayer the player you need to pay
      */
-    public void payment(char anotherPlayerColour, int amount){
-        return;
+    public void payment(Player anotherPlayer,int amount){
     }
 }

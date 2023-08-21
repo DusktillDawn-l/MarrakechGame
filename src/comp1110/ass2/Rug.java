@@ -1,7 +1,7 @@
 package comp1110.ass2;
 
 public class Rug {
-    private char color;
+    private final char color;
     private int x1;
     private int y1;
     private int x2;
