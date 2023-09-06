@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Marrakech {
-    private char[][] squareColor = new char[7][7];
+    private char[][] board = new char[7][7];
     private ArrayList<Player> playerList = new ArrayList<Player>();
 
     //check how many same color rugs are connected with the given coordinate.
