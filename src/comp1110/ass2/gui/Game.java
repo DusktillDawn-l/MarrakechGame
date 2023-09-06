@@ -1,6 +1,6 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.Player;
+import comp1110.ass2.*;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -19,10 +19,4 @@ public class Game extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
-//    public static void main(String[] args) {
-//        Player x = new Player('c');
-//        String playerString = x.getPlayerString();
-//        System.out.println(playerString);
-//    }
 }
