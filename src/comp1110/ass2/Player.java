@@ -24,7 +24,7 @@ public class Player {
         this.inGame = true;
         //构建playerString
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.setLength(8);
+        stringBuilder.setLength(playerStringLength);
         stringBuilder.setCharAt(playerDigit,'p');
         stringBuilder.setCharAt(colorDigit,colour);
         stringBuilder.setCharAt(dirhamsHundredsDigit,'0');
