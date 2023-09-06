@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Marrakech {
-    private char[][] squareColor = new char[7][7];
+    private char[][] board = new char[7][7];
     private ArrayList<Player> playerList = new ArrayList<Player>();
     private ArrayList<Rug> rugList = new ArrayList<Rug>();
 
