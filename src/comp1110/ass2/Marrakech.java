@@ -1,11 +1,15 @@
 package comp1110.ass2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class Marrakech {
     private char[][] squareColor = new char[7][7];
     private ArrayList<Player> playerList = new ArrayList<Player>();
+    private ArrayList<Rug> rugList = new ArrayList<Rug>();
+
+
 
     //check how many same color rugs are connected with the given coordinate.
     public int connectedRugs (int x, int y){
@@ -39,8 +43,36 @@ public class Marrakech {
      * @return true if the rug is valid, and false otherwise.
      */
     public static boolean isRugValid(String gameString, String rug) {
-
-        return false;
+        // Can't create rug object here, we don't know whether the rug string is valid
+        // check color
+        String pStr = gameString.substring(0, gameString.indexOf('A'));
+        char color = rug.charAt(0);
+        if (!pStr.contains(String.valueOf(color))){
+            return false;
+        }
+        // check id and coordinates
+        try{
+            int id = Integer.parseInt(rug.substring(1,3));
+            int x1 = Integer.parseInt(rug.substring(3,4));
+            int y1 = Integer.parseInt(rug.substring(4,5));
+            int x2 = Integer.parseInt(rug.substring(5,6));
+            int y2 = Integer.parseInt(rug.substring(6,7));
+            if ((x1 < 0 || x1 > 6) ||
+                (x2 < 0 || x2 > 6) ||
+                (y1 < 0 || y1 > 6) ||
+                (y2 < 0 || y2 > 6)){
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        // Check color+id is unique
+        String cid = rug.substring(0,3);
+        String boardStr = gameString.substring(gameString.indexOf('B'));
+        if (boardStr.contains(cid)) {
+            return false;
+        }
+        return true;
     }
 
     /**
