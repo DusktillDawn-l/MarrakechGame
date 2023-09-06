@@ -1,6 +1,7 @@
 package comp1110.ass2;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Marrakech {
     private char[][] squareColor = new char[7][7];
@@ -38,7 +39,7 @@ public class Marrakech {
      * @return true if the rug is valid, and false otherwise.
      */
     public static boolean isRugValid(String gameString, String rug) {
-        // FIXME: Task 4
+
         return false;
     }
 
@@ -57,8 +58,10 @@ public class Marrakech {
      * @return The result of the roll of the die meeting the criteria above
      */
     public static int rollDie() {
-        // FIXME: Task 6
-        return -1;
+        Random rand = new Random();
+        int randNum = rand.nextInt(6);
+        int[] prob = {1, 2, 2, 3, 3, 4};
+        return prob[randNum];
     }
 
     /**
