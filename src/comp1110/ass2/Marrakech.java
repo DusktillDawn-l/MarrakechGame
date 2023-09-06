@@ -44,10 +44,11 @@ public class Marrakech {
      */
     public static boolean isRugValid(String gameString, String rug) {
         // Can't create rug object here, we don't know whether the rug string is valid
-        // check color
+        // check color is valid and the player is in game
         String pStr = gameString.substring(0, gameString.indexOf('A'));
         char color = rug.charAt(0);
-        if (!pStr.contains(String.valueOf(color))){
+        if (!pStr.contains(String.valueOf(color)) ||
+                ((color != 'c') && (color != 'r') && (color != 'y') && (color != 'p'))){
             return false;
         }
         // check id and coordinates
