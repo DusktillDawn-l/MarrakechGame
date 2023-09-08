@@ -12,7 +12,6 @@ public class Rug {
     public static final int colorDigit = 0;//the color digit of rug string representing the color of the player placing this rug
     public static final int idTensDigit = 1;//the tens digit of id in rug string
     public static final int idOnesDigit = 2;//the ones digit of id in rug string
-
     public static final int x1CoordinateDigit = 3;//the x1 coordinate digit of rug string
     public static final int y1CoordinateDigit = 4;//the y1 coordinate digit of rug string
     public static final int x2CoordinateDigit = 5;//the x2 coordinate digit of rug string
@@ -26,20 +25,33 @@ public class Rug {
         this.y2 = y2;
         this.color = color;
         rugNumber++;
-        //build rug String
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.setLength(rugStringLength);
-        stringBuilder.setCharAt(colorDigit,color.getColor());
-        stringBuilder.setCharAt(idTensDigit,Character.forDigit(rugNumber/10,10));
-        stringBuilder.setCharAt(idOnesDigit,Character.forDigit(rugNumber%10,10));
-        stringBuilder.setCharAt(x1CoordinateDigit,Character.forDigit(x1,10));
-        stringBuilder.setCharAt(y1CoordinateDigit,Character.forDigit(y1,10));
-        stringBuilder.setCharAt(x2CoordinateDigit,Character.forDigit(x2,10));
-        stringBuilder.setCharAt(y2CoordinateDigit,Character.forDigit(y2,10));
-        rugString = stringBuilder.toString();
-        System.out.println(rugString);
+//        //build rug String
+//        StringBuilder stringBuilder = new StringBuilder();
+//        stringBuilder.setLength(rugStringLength);
+//        stringBuilder.setCharAt(colorDigit,color.getColor());
+//        stringBuilder.setCharAt(idTensDigit,Character.forDigit(rugNumber/10,10));
+//        stringBuilder.setCharAt(idOnesDigit,Character.forDigit(rugNumber%10,10));
+//        stringBuilder.setCharAt(x1CoordinateDigit,Character.forDigit(x1,10));
+//        stringBuilder.setCharAt(y1CoordinateDigit,Character.forDigit(y1,10));
+//        stringBuilder.setCharAt(x2CoordinateDigit,Character.forDigit(x2,10));
+//        stringBuilder.setCharAt(y2CoordinateDigit,Character.forDigit(y2,10));
+//        rugString = stringBuilder.toString();
+//        System.out.println(rugString);
     }
-    
+
+    public Rug(String rugString) {
+        if (rugString.length()!=rugStringLength)
+            throw new RuntimeException("Invalid Assam String");
+        else{
+            this.x1 = Character.getNumericValue(rugString.charAt(x1CoordinateDigit));
+            this.y1 = Character.getNumericValue(rugString.charAt(y1CoordinateDigit));
+            this.x2 = Character.getNumericValue(rugString.charAt(x2CoordinateDigit));
+            this.y2 = Character.getNumericValue(rugString.charAt(y2CoordinateDigit));
+            this.color = Color.valueOf(String.valueOf(rugString.charAt(colorDigit)));
+            rugNumber++;
+        }
+    }
+
     //getters
     public int getX1() {
         return x1;
@@ -57,7 +69,13 @@ public class Rug {
         return y2;
     }
 
-    public String getRugString(){
-        return rugString;
+    @Override
+    public String toString() {
+        return color+
+                String.format("%02d",rugNumber)+
+                x1+
+                y1+
+                x2+
+                y2;
     }
 }
