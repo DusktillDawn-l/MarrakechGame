@@ -6,8 +6,7 @@ public class Rug {
     private int y1;
     private int x2;
     private int y2;
-    public String rugString;
-    public static int rugNumber=0;//representing how many rug have been placed
+    public static int rugID =0;//representing rug id
     public static final int rugStringLength = 7;//the length of rug string
     public static final int colorDigit = 0;//the color digit of rug string representing the color of the player placing this rug
     public static final int idTensDigit = 1;//the tens digit of id in rug string
@@ -24,31 +23,19 @@ public class Rug {
         this.y1 = y1;
         this.y2 = y2;
         this.color = color;
-        rugNumber++;
-//        //build rug String
-//        StringBuilder stringBuilder = new StringBuilder();
-//        stringBuilder.setLength(rugStringLength);
-//        stringBuilder.setCharAt(colorDigit,color.getColor());
-//        stringBuilder.setCharAt(idTensDigit,Character.forDigit(rugNumber/10,10));
-//        stringBuilder.setCharAt(idOnesDigit,Character.forDigit(rugNumber%10,10));
-//        stringBuilder.setCharAt(x1CoordinateDigit,Character.forDigit(x1,10));
-//        stringBuilder.setCharAt(y1CoordinateDigit,Character.forDigit(y1,10));
-//        stringBuilder.setCharAt(x2CoordinateDigit,Character.forDigit(x2,10));
-//        stringBuilder.setCharAt(y2CoordinateDigit,Character.forDigit(y2,10));
-//        rugString = stringBuilder.toString();
-//        System.out.println(rugString);
+        rugID++;
     }
 
-    public Rug(String rugString) {
-        if (rugString.length()!=rugStringLength)
-            throw new RuntimeException("Invalid Assam String");
+    public Rug(String rugString) {//使用此构造函数的潜在问题：导致rug的id不连贯
+        if (rugString.length()!=rugStringLength||Integer.parseInt(rugString.substring(1,3))<= rugID)
+            throw new RuntimeException("Invalid Rug String");
         else{
             this.x1 = Character.getNumericValue(rugString.charAt(x1CoordinateDigit));
             this.y1 = Character.getNumericValue(rugString.charAt(y1CoordinateDigit));
             this.x2 = Character.getNumericValue(rugString.charAt(x2CoordinateDigit));
             this.y2 = Character.getNumericValue(rugString.charAt(y2CoordinateDigit));
             this.color = Color.valueOf(String.valueOf(rugString.charAt(colorDigit)));
-            rugNumber++;
+            rugID = Integer.parseInt(rugString.substring(1,3));
         }
     }
 
@@ -72,7 +59,7 @@ public class Rug {
     @Override
     public String toString() {
         return color+
-                String.format("%02d",rugNumber)+
+                String.format("%02d", rugID)+
                 x1+
                 y1+
                 x2+
