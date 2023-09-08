@@ -58,20 +58,5 @@ public class Player {
                 String.format("%03d", dirhams)+
                 String.format("%02d", rugAvailable)+
                 inGame;
-//        StringBuilder playerString = new StringBuilder();
-//
-//        playerString.append('P');
-//        playerString.append(color);
-//
-//        // Format the dirhams to be a 3-digit number
-//        String formattedDirhams = String.format("%03d", dirhams);
-//        playerString.append(formattedDirhams);
-//
-//        String formattedRugsRemaining = String.format("%02d", rugAvailable);
-//        playerString.append(formattedRugsRemaining);
-//        playerString.append(inGame);
-//
-//        return playerString.toString();
-
     }
 }
