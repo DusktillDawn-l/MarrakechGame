@@ -4,7 +4,6 @@ public class Assam {
     private int x;
     private int y;
     Direction dir;
-    private String assamString;//the assam string
     private static final int assamStringLength = 4;//the length of assam string
     public static final int assamDigit = 0;//the digit representing this string is a assam string
     public static final int xCoordinateDigit = 1;//the x coordinate digit of assam string
