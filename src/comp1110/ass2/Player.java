@@ -1,15 +1,13 @@
 package comp1110.ass2;
 
-import java.util.Arrays;
-
 public class Player {
-    private final char colour;
-    private int dirhams;	//the currency in use in this game
+    private final Color color;
+    private int dirhams;//the currency in use in this game
     private int rugAvailable; //Each player starts the game with 15 rugs
     private char inGame;
 
-    public Player(char colour) {
-        this.colour = colour;
+    public Player(Color color) {
+        this.color = color;
         this.dirhams = 30;
         this.rugAvailable = 15;
         this.inGame = 'i';
@@ -18,13 +16,13 @@ public class Player {
         if (s.charAt(0) != 'P') {
             throw new RuntimeException("Invalid player string");
         }
-        this.colour = s.charAt(1);
+        this.color = Color.valueOf(String.valueOf(s.charAt(1)));
         this.dirhams = Integer.parseInt(s.substring(2,5));
         this.rugAvailable = Integer.parseInt(s.substring(5,7));
         this.inGame = s.charAt(7);;
     }
-    public char getColour() {
-        return colour;
+    public Color getColor() {
+        return color;
     }
 
     public int getDirhams() {
@@ -55,20 +53,25 @@ public class Player {
 
     @Override
     public String toString() {
-        StringBuilder playerString = new StringBuilder();
-
-        playerString.append('P');
-        playerString.append(colour);
-
-        // Format the dirhams to be a 3-digit number
-        String formattedDirhams = String.format("%03d", dirhams);
-        playerString.append(formattedDirhams);
-
-        String formattedRugsRemaining = String.format("%02d", rugAvailable);
-        playerString.append(formattedRugsRemaining);
-        playerString.append(inGame);
-
-        return playerString.toString();
+        return  "P"+
+                color+
+                String.format("%03d", dirhams)+
+                String.format("%02d", rugAvailable)+
+                inGame;
+//        StringBuilder playerString = new StringBuilder();
+//
+//        playerString.append('P');
+//        playerString.append(color);
+//
+//        // Format the dirhams to be a 3-digit number
+//        String formattedDirhams = String.format("%03d", dirhams);
+//        playerString.append(formattedDirhams);
+//
+//        String formattedRugsRemaining = String.format("%02d", rugAvailable);
+//        playerString.append(formattedRugsRemaining);
+//        playerString.append(inGame);
+//
+//        return playerString.toString();
 
     }
 }
