@@ -5,9 +5,11 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Marrakech {
-    private char[][] board = new char[7][7];
-    private ArrayList<Player> playerList = new ArrayList<Player>();
-    private ArrayList<Rug> rugList = new ArrayList<Rug>();
+    private static Board board = new Board();
+    private static Assam assam = new Assam(3,3,Direction.N);
+//    private char[][] board = new char[7][7];
+    private static ArrayList<Player> playerList = new ArrayList<Player>();
+    private static ArrayList<Rug> rugList = new ArrayList<Rug>();
 
 
 
@@ -208,6 +210,16 @@ public class Marrakech {
     public static String makePlacement(String currentGame, String rug) {
         // FIXME: Task 14
         return "";
+    }
+
+    public static String getGameString(){
+        StringBuilder gameStringBuilder = new StringBuilder();
+        for (Player player: playerList) {
+            gameStringBuilder.append(player.toString());
+        }
+        gameStringBuilder.append(assam.toString());
+        gameStringBuilder.append(board.toString());
+        return gameStringBuilder.toString();
     }
 
 }
