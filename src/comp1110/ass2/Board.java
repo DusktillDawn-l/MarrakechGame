@@ -11,6 +11,19 @@ public class Board {
             }
         }
     }
+    //initial board with board string
+    public Board(String boardString){
+        if (boardString.charAt(0)!='B'||boardString.length()!=148)
+            throw new RuntimeException("Invalid board string");
+        else {
+            boardString = boardString.substring(1);
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < column; j++) {
+                    board[i][j]= boardString.substring(i*3,(i+1)*3);
+                }
+            }
+        }
+    }
 
     /**
      *
