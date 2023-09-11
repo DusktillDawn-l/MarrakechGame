@@ -11,12 +11,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import comp1110.ass2.Helper.*;
 
 import java.util.ArrayList;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+
+import static comp1110.ass2.Helper.charToColor;
 
 public class Viewer extends Application {
 
@@ -61,6 +65,36 @@ public class Viewer extends Application {
         primaryStage.show();
 
         String[] splits = state.split("A");
+        String playerStr = splits[0];
+        for (int i = 0; i < playerStr.length() / 8; i++) {
+            int iInc = i * 8;
+            int playerGap = 130;
+            // add player color
+            Text p = new Text();
+            p.setText("Player" + (i + 1));
+            p.setFill(charToColor(playerStr.charAt(iInc + 1)));
+            p.setStroke(Color.BLACK);
+            p.setStyle("-fx-font: 24 arial;");
+            p.setStrokeWidth(0.8);
+            p.setX(50);
+            p.setY(50 + i * playerGap);
+            pane.getChildren().add(p);
+            // add dirham amount
+            Text dirham = new Text();
+            dirham.setText("Dirhams: " + Integer.parseInt(playerStr.substring(2 + iInc, 5 + iInc)));
+            dirham.setX(50);
+            dirham.setY(70 + i * playerGap);
+            pane.getChildren().add(dirham);
+            // add rug amount
+            Text rug = new Text();
+            rug.setText("Remaining rugs: " + Integer.parseInt(playerStr.substring(5 + iInc, 7 + iInc)));
+            rug.setX(50);
+            rug.setY(90 + i * playerGap);
+            pane.getChildren().add(rug);
+        }
+
+
+
         String assamAndBoard = splits[1];
         String assam = assamAndBoard.substring(0, 3);
         String board = assamAndBoard.substring(4);
@@ -75,17 +109,7 @@ public class Viewer extends Application {
                 int row = i / 3 / 7;
                 int col = i / 3 % 7;
                 char squareColor = currentSquare.charAt(0);
-                if (squareColor == 'p') {
-                    rectangles.get(row * 7 + col).setFill(Color.PURPLE);
-                } else if (squareColor == 'c') {
-                    rectangles.get(row * 7 + col).setFill(Color.CYAN);
-                } else if (squareColor == 'y') {
-                    rectangles.get(row * 7 + col).setFill(Color.YELLOW);
-                } else if (squareColor == 'r'){
-                    rectangles.get(row * 7 + col).setFill(Color.RED);
-                } else {
-                    throw new RuntimeException("Invalid color");
-                }
+                rectangles.get(row * 7 + col).setFill(charToColor(squareColor));
             }
         }
 
