@@ -9,7 +9,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import java.awt.*;
+import java.util.ArrayList;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 
 public class Viewer extends Application {
 
@@ -27,6 +34,95 @@ public class Viewer extends Application {
      * @param state an array of two strings, representing the current game state
      */
     void displayState(String state) {
+        int boardSize = 70;
+        double gapSize = 10;
+        Pane pane = new Pane();
+
+        ArrayList<Rectangle> rectangles = new ArrayList<>();
+
+        for (int row = 0; row < 7; row++) {
+            for (int col = 0; col < 7; col++) {
+                double x = 320 + col * (boardSize + gapSize);
+                double y = 70 + row * (boardSize + gapSize);
+
+                Rectangle square = new Rectangle((int) x, (int) y,boardSize,boardSize);
+                square.setFill(Color.ORANGE);
+                rectangles.add(square);
+                pane.getChildren().add(square);
+            }
+        }
+
+        Scene scene = new Scene(pane, 1200, 700);
+        Stage primaryStage = new Stage();
+        primaryStage.setTitle("Board");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        String[] splits = state.split("A");
+        String assamAndBoard = splits[1];
+        String assam = assamAndBoard.substring(0,4);
+        String board = assamAndBoard.substring(4);
+        char assamDirection = assam.charAt(3);
+        char assamPositionRow = assam.charAt(1);
+        char assamPositionCol = assam.charAt(2);
+
+        // Fill the Rug color
+        for (int i = 0; i < board.length(); i+=3) {
+            String currentSquare = board.substring(i, i+3);
+            if (!currentSquare.equals("n00")) {
+                int row = i / 3 / 7;
+                int col = i / 3 % 7;
+                char squareColor = currentSquare.charAt(0);
+                if (squareColor == 'p') {
+                    rectangles.get(row * 7 + col).setFill(Color.PURPLE);
+                }
+                else if (squareColor == 'c') {
+                    rectangles.get(row * 7 + col).setFill(Color.CYAN);
+                }
+                else if (squareColor == 'y') {
+                    rectangles.get(row * 7 + col).setFill(Color.YELLOW);
+                }
+                else {
+                    rectangles.get(row * 7 + col).setFill(Color.RED);
+                }
+            }
+        }
+
+        // Fill the assam to the right position,use arrow can represent the direction
+        int assamRow = Character.getNumericValue(assamPositionRow);
+        int assamCol = Character.getNumericValue(assamPositionCol);
+
+        double assamX = 320 + assamCol * (boardSize + gapSize) + boardSize / 2;
+        double assamY = 70 + assamRow * (boardSize + gapSize) + boardSize / 2;
+
+        // Create an arrow pointing upward as default
+        Polygon assamArrow = new Polygon();
+        assamArrow.getPoints().addAll(
+                assamX, assamY - boardSize / 5,
+                assamX - boardSize / 5, assamY + boardSize / 5,
+                assamX + boardSize / 5, assamY + boardSize / 5
+        );
+        assamArrow.setFill(Color.BLACK);
+
+        switch (assamDirection) {
+            case 'N':
+                break;  // Default: Arrow is already pointing up
+            case 'E':
+                assamArrow.setRotate(90);
+                break;
+            case 'S':
+                assamArrow.setRotate(180);
+                break;
+            case 'W':
+                assamArrow.setRotate(270);
+                break;
+            default:
+                break;  // If other cases occur
+        }
+
+        pane.getChildren().addAll(assamArrow);
+
+
         // FIXME Task 5: implement the simple state viewer
     }
 
