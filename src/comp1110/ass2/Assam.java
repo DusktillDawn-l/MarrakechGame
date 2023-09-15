@@ -4,7 +4,6 @@ public class Assam {
     private int x;
     private int y;
     Direction dir;
-    private String assamString;//the assam string
     private static final int assamStringLength = 4;//the length of assam string
     public static final int assamDigit = 0;//the digit representing this string is a assam string
     public static final int xCoordinateDigit = 1;//the x coordinate digit of assam string
@@ -15,14 +14,16 @@ public class Assam {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        //build assam string
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.setLength(assamStringLength);
-        stringBuilder.setCharAt(assamDigit,'A');
-        stringBuilder.setCharAt(xCoordinateDigit,Character.forDigit(x,10));
-        stringBuilder.setCharAt(yCoordinateDigit,Character.forDigit(y,10));
-        stringBuilder.setCharAt(orientationDigit, dir.getDirection());
-        assamString = stringBuilder.toString();
+    }
+    public Assam(String string){
+        if (string.charAt(assamDigit)=='A'&&string.length()==assamStringLength)
+        {
+            this.x = Character.getNumericValue(string.charAt(xCoordinateDigit));
+            this.y = Character.getNumericValue(string.charAt(yCoordinateDigit));
+            this.dir = Direction.valueOf(String.valueOf(string.charAt(orientationDigit)));
+        }
+        else
+            throw new RuntimeException("Invalid Assam String");
     }
 
 
@@ -46,7 +47,10 @@ public class Assam {
         return;
     }
 
-    public String getAssamString(){
-        return assamString;
+    public String toString(){
+        return "A" +
+                x +
+                y +
+                dir;
     }
 }

@@ -1,55 +1,40 @@
 package comp1110.ass2;
 
-import java.util.Arrays;
-
 public class Player {
-    private final char colour;
-    private int dirhams;	//the currency in use in this game
+    private final Color color;
+    private int dirhams;//the currency in use in this game
     private int rugAvailable; //Each player starts the game with 15 rugs
-    private boolean inGame;
-    private String playerString;//the playString
-    private final int playerStringLength = 8;//the length of playerString
-    private final static int playerDigit= 0;//the 1 digit of playerString
-    private final static int colorDigit=1;//the color digit of playerString
-    private final static int dirhamsHundredsDigit=2;//the hundreds digit of dirhams of playerString
-    private final static int dirhamsTensDigit=3;//the tens digit of dirhams of playerString
-    private final static int dirhamsOnesDigit=4;//the ones digit of dirhams of playerString
-    private final static int rugTensDigit=5;//the tens digit of rug of playerString
-    private static final int rugOnesDigit=6;//the ones digit of rug of playerString
-    private final static int inGameDigit=7;//the in game of playerString
-    public Player(char colour) {
-        this.colour = colour;
+    private char inGame;
+
+    public Player(Color color) {
+        this.color = color;
         this.dirhams = 30;
         this.rugAvailable = 15;
-        this.inGame = true;
-        //build playerString
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.setLength(playerStringLength);
-        stringBuilder.setCharAt(playerDigit,'p');
-        stringBuilder.setCharAt(colorDigit,colour);
-        stringBuilder.setCharAt(dirhamsHundredsDigit,'0');
-        stringBuilder.setCharAt(dirhamsTensDigit,'3');
-        stringBuilder.setCharAt(dirhamsOnesDigit,'0');
-        stringBuilder.setCharAt(rugTensDigit,'1');
-        stringBuilder.setCharAt(rugOnesDigit,'5');
-        stringBuilder.setCharAt(inGameDigit,'i');
-        playerString = stringBuilder.toString();
+        this.inGame = 'i';
     }
-
-    public char getColour() {
-        return colour;
+    public Player (String s){
+        if (s.charAt(0) != 'P') {
+            throw new RuntimeException("Invalid player string");
+        }
+        this.color = Color.valueOf(String.valueOf(s.charAt(1)));
+        this.dirhams = Integer.parseInt(s.substring(2,5));
+        this.rugAvailable = Integer.parseInt(s.substring(5,7));
+        this.inGame = s.charAt(7);;
+    }
+    public Color getColor() {
+        return color;
     }
 
     public int getDirhams() {
         return dirhams;
     }
 
-    public boolean isInGame() {
+    public char getInGame() {
         return inGame;
     }
 
     public void quitGame() {
-        this.inGame = false;
+        this.inGame = 'o';
     }
 
     public int getRugAvailable() {
@@ -65,7 +50,13 @@ public class Player {
      */
     public void payment(Player anotherPlayer,int amount){
     }
-    public String getPlayerString(){
-        return playerString;
+
+    @Override
+    public String toString() {
+        return  "P"+
+                color+
+                String.format("%03d", dirhams)+
+                String.format("%02d", rugAvailable)+
+                inGame;
     }
 }

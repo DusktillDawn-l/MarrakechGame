@@ -22,6 +22,12 @@ import javafx.scene.shape.Polygon;
 
 import static comp1110.ass2.Helper.charToColor;
 
+import java.awt.*;
+import java.util.ArrayList;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+
 public class Viewer extends Application {
 
     private static final int VIEWER_WIDTH = 1200;
