@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,7 +11,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import comp1110.ass2.Helper.*;
+
+import java.util.ArrayList;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+
+import static comp1110.ass2.Helper.charToColor;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -30,12 +40,13 @@ public class Viewer extends Application {
 
     /**
      * Draw a placement in the window, removing any previously drawn placements
-     *
+     * The default color (not painted square) is orange
      * @param state an array of two strings, representing the current game state
      */
+
     void displayState(String state) {
-        int boardSize = 70;
-        double gapSize = 10;
+        int boardSize = 80;
+        double gapSize = 0;
         Pane pane = new Pane();
 
         ArrayList<Rectangle> rectangles = new ArrayList<>();
@@ -45,8 +56,9 @@ public class Viewer extends Application {
                 double x = 320 + col * (boardSize + gapSize);
                 double y = 70 + row * (boardSize + gapSize);
 
-                Rectangle square = new Rectangle((int) x, (int) y,boardSize,boardSize);
-                square.setFill(Color.ORANGE);
+                Rectangle square = new Rectangle((int) x, (int) y, boardSize, boardSize);
+                square.setFill(Color.WHITE);
+                square.setStroke(Color.BLACK);
                 rectangles.add(square);
                 pane.getChildren().add(square);
             }
@@ -59,32 +71,51 @@ public class Viewer extends Application {
         primaryStage.show();
 
         String[] splits = state.split("A");
+        String playerStr = splits[0];
+        for (int i = 0; i < playerStr.length() / 8; i++) {
+            int iInc = i * 8;
+            int playerGap = 130;
+            // add player color
+            Text p = new Text();
+            p.setText("Player" + (i + 1));
+            p.setFill(charToColor(playerStr.charAt(iInc + 1)));
+            p.setStroke(Color.BLACK);
+            p.setStyle("-fx-font: 24 arial;");
+            p.setStrokeWidth(0.8);
+            p.setX(50);
+            p.setY(50 + i * playerGap);
+            pane.getChildren().add(p);
+            // add dirham amount
+            Text dirham = new Text();
+            dirham.setText("Dirhams: " + Integer.parseInt(playerStr.substring(2 + iInc, 5 + iInc)));
+            dirham.setX(50);
+            dirham.setY(70 + i * playerGap);
+            pane.getChildren().add(dirham);
+            // add rug amount
+            Text rug = new Text();
+            rug.setText("Remaining rugs: " + Integer.parseInt(playerStr.substring(5 + iInc, 7 + iInc)));
+            rug.setX(50);
+            rug.setY(90 + i * playerGap);
+            pane.getChildren().add(rug);
+        }
+
+
+
         String assamAndBoard = splits[1];
-        String assam = assamAndBoard.substring(0,4);
+        String assam = assamAndBoard.substring(0, 3);
         String board = assamAndBoard.substring(4);
-        char assamDirection = assam.charAt(3);
-        char assamPositionRow = assam.charAt(1);
-        char assamPositionCol = assam.charAt(2);
+        char assamDirection = assam.charAt(2);
+        char assamPositionRow = assam.charAt(0);
+        char assamPositionCol = assam.charAt(1);
 
         // Fill the Rug color
-        for (int i = 0; i < board.length(); i+=3) {
-            String currentSquare = board.substring(i, i+3);
+        for (int i = 0; i < board.length(); i += 3) {
+            String currentSquare = board.substring(i, i + 3);
             if (!currentSquare.equals("n00")) {
                 int row = i / 3 / 7;
                 int col = i / 3 % 7;
                 char squareColor = currentSquare.charAt(0);
-                if (squareColor == 'p') {
-                    rectangles.get(row * 7 + col).setFill(Color.PURPLE);
-                }
-                else if (squareColor == 'c') {
-                    rectangles.get(row * 7 + col).setFill(Color.CYAN);
-                }
-                else if (squareColor == 'y') {
-                    rectangles.get(row * 7 + col).setFill(Color.YELLOW);
-                }
-                else {
-                    rectangles.get(row * 7 + col).setFill(Color.RED);
-                }
+                rectangles.get(row * 7 + col).setFill(charToColor(squareColor));
             }
         }
 
@@ -92,8 +123,8 @@ public class Viewer extends Application {
         int assamRow = Character.getNumericValue(assamPositionRow);
         int assamCol = Character.getNumericValue(assamPositionCol);
 
-        double assamX = 320 + assamCol * (boardSize + gapSize) + boardSize / 2;
-        double assamY = 70 + assamRow * (boardSize + gapSize) + boardSize / 2;
+        double assamX = 320 + assamCol * (boardSize + gapSize) + (double) boardSize / 2;
+        double assamY = 70 + assamRow * (boardSize + gapSize) + (double) boardSize / 2;
 
         // Create an arrow pointing upward as default
         Polygon assamArrow = new Polygon();
@@ -117,18 +148,16 @@ public class Viewer extends Application {
                 assamArrow.setRotate(270);
                 break;
             default:
-                break;  // If other cases occur
+                throw new RuntimeException("Invalid direction");
         }
 
         pane.getChildren().addAll(assamArrow);
-
-
-        // FIXME Task 5: implement the simple state viewer
     }
 
-    /**
-     * Create a basic text field for input and a refresh button.
-     */
+
+        /**
+         * Create a basic text field for input and a refresh button.
+         */
     private void makeControls() {
         Label boardLabel = new Label("Game State:");
         boardTextField = new TextField();
