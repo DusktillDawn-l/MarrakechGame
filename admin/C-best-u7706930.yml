@@ -16,7 +16,8 @@ declaration: >-
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
-method: displayState
+method: 
+   - displayState
    - https://gitlab.cecs.anu.edu.au/u7611510/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Viewer.java#L47-71
    - https://gitlab.cecs.anu.edu.au/u7611510/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Viewer.java#L104-155
 
