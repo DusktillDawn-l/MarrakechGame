@@ -1,6 +1,8 @@
-package comp1110.ass2;
+package comp1110.ass2.test;
 
 import static org.junit.Assert.*;
+
+import comp1110.ass2.Board;
 import org.junit.Before;
 import org.junit.Test;
 
