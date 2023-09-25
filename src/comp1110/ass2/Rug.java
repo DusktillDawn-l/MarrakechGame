@@ -56,6 +56,8 @@ public class Rug {
         return y2;
     }
 
+    public Color getColor() {return color;}
+
     @Override
     public String toString() {
         return color+
