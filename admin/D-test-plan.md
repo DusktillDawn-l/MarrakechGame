@@ -11,3 +11,25 @@
 
 Do **not** include in your test plan the `Marrakech` class or the predefined
 static methods for which we have already provided unit tests.
+
+testPlan## Board.java
+* Board Default Constructor
+* Board String Constructor
+* setBoard
+
+## Player.java
+* Player Default Constructor
+* Player String Constructor
+* quitGame
+* placeRug
+
+## Assam.java
+* Assam Default Constructor
+* move
+* changeDirection
+* toString
+
+## Rug.java
+
+## Marrakech
+* getGameString
