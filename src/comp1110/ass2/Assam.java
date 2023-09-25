@@ -15,6 +15,7 @@ public class Assam {
         this.y = y;
         this.dir = dir;
     }
+
     public Assam(String string){
         if (string.charAt(assamDigit)=='A'&&string.length()==assamStringLength)
         {
@@ -40,11 +41,19 @@ public class Assam {
     }
 
     public void changeDirection(Direction d){
-        return;
+        this.dir = d;
     }
 
     public void move(int steps){
-        return;
+        if (steps < 1 || steps > 4) {
+            throw new RuntimeException("Invalid steps");
+        }
+        switch (dir){
+            case N -> y = (y - steps + 7) % 7;
+            case S -> y = (y + steps + 7) % 7;
+            case E -> x = (x + steps + 7) % 7;
+            case W -> x = (x - steps + 7) % 7;
+        }
     }
 
     public String toString(){
