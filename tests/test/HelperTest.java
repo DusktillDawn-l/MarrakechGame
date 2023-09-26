@@ -1,10 +1,11 @@
-package comp1110.ass2.test;
+package test;
 
 import static comp1110.ass2.Helper.*;
-import static org.junit.Assert.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import javafx.scene.paint.Color;
 
-import org.junit.Test;
 public class HelperTest {
     @Test
     public void testCharToColor(){

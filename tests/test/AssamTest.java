@@ -1,19 +1,17 @@
-package comp1110.ass2.test;
+package test;
 import comp1110.ass2.Assam;
 import comp1110.ass2.Color;
 import comp1110.ass2.Direction;
 import comp1110.ass2.Player;
-import org.junit.Before;
-import org.junit.Test;
-
-import static comp1110.ass2.Helper.charToColor;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class AssamTest {
     private Assam a;
     private final String aStr = "A11N";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         a = new Assam(aStr);
     }

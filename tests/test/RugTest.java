@@ -1,17 +1,22 @@
-package comp1110.ass2.test;
+package test;
 
 import comp1110.ass2.Color;
 import comp1110.ass2.Rug;
-import org.junit.Before;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 public class RugTest {
     private Rug rug;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         rug = new Rug(0, 0, 0, 1, Color.r);
+    }
+
+    @Test
+    public void testGetAbbrRugString() {
+        assertEquals("r03", rug.getAbbrRugString());
     }
 
     @Test
@@ -28,9 +33,6 @@ public class RugTest {
         assertEquals("r010001", rug.toString());
     }
 
-    @Test
-    public void testGetAbbrRugString() {
-        assertEquals("r03", rug.getAbbrRugString());
-    }
+
 
 }

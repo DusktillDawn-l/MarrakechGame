@@ -1,15 +1,14 @@
-package comp1110.ass2.test;
-
-import static org.junit.Assert.*;
+package test;
 
 import comp1110.ass2.Board;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class BoardTest {
     private Board board;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         board = new Board();
     }

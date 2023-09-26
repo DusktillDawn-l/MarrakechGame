@@ -1,16 +1,17 @@
-package comp1110.ass2.test;
+package test;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import comp1110.ass2.Color;
 import comp1110.ass2.Player;
-import org.junit.Before;
-import org.junit.Test;
+
 
 public class PlayerTest {
     private Player player;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         player = new Player(Color.c);
     }
@@ -50,17 +51,22 @@ public class PlayerTest {
     }
 
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testInvalidStringConstructor() {
+        assertThrows(RuntimeException.class, () -> {
+            String invalidString = "InvalidString";
+            Player newPlayer = new Player(invalidString);
+        });
         // Test the constructor with an invalid playerString
-        String invalidString = "InvalidString";
-        Player newPlayer = new Player(invalidString);
+
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testInvalidPlayerStringColor() {
         // Test the constructor with an invalid color in playerString
-        String invalidString = "PZ003150i";
-        Player newPlayer = new Player(invalidString);
+        assertThrows(RuntimeException.class, () -> {
+            String invalidString = "PZ003150i";
+            Player newPlayer = new Player(invalidString);
+        });
     }
 }
