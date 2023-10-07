@@ -265,6 +265,16 @@ public class Marrakech {
         return amount;
     }
 
+    /**
+     * specify the amount we need to pay
+     * @param boardArray the 2d board abbr rug array
+     * @param row current row of boardArray
+     * @param column current column of boardArray
+     * @param color the color Assam step on
+     * @param amount the amount we need to pay
+     * @param visited whether we count the current location or not
+     * @return the amount we need to pay
+     */
     public static int traverse(String[][] boardArray, int row, int column, char color, int amount, boolean[][] visited) {
         if (row < 0 || row >= 7 || column < 0 || column >= 7 || visited[row][column] || boardArray[row][column].charAt(0) != color) {
             return amount;
