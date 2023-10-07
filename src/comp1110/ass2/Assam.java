@@ -40,19 +40,115 @@ public class Assam {
         return this.dir;
     }
 
-    public void changeDirection(Direction d){
-        this.dir = d;
+    public void changeDirection(int rotation){
+        if (rotation == 90) {
+            switch (this.dir) {
+                case N:
+                    this.dir = Direction.E;
+                    break;
+                case E:
+                    this.dir = Direction.S;
+                    break;
+                case S:
+                    this.dir = Direction.W;
+                    break;
+                case W:
+                    this.dir = Direction.N;
+                    break;
+            }
+        } else if (rotation == 270) {
+            switch (this.dir) {
+                case N:
+                    this.dir = Direction.W;
+                    break;
+                case E:
+                    this.dir = Direction.N;
+                    break;
+                case S:
+                    this.dir = Direction.E;
+                    break;
+                case W:
+                    this.dir = Direction.S;
+                    break;
+            }
+        }
     }
 
     public void move(int steps){
         if (steps < 1 || steps > 4) {
             throw new RuntimeException("Invalid steps");
         }
-        switch (dir){
-            case N -> y = (y - steps + 7) % 7;
-            case S -> y = (y + steps + 7) % 7;
-            case E -> x = (x + steps + 7) % 7;
-            case W -> x = (x - steps + 7) % 7;
+        for (; steps > 0; steps--) {
+            switch (dir) {
+                case N:
+                    this.y--;
+                    break;
+                case E:
+                    this.x++;
+                    break;
+                case S:
+                    this.y++;
+                    break;
+                case W:
+                    this.x--;
+                    break;
+            }
+
+            if (this.x < 0) {
+                if (this.y == Board.row - 1) {
+                    dir = Direction.N;
+                } else {
+                    dir = Direction.E;
+                    if (this.y % 2 == 0) {
+                        this.y++;
+                    } else {
+                        this.y--;
+                    }
+                }
+                this.x = 0;
+            }
+
+            if (this.x >= Board.column) {
+                if (this.y == 0) {
+                    dir = Direction.S;
+                } else {
+                    dir = Direction.W;
+                    if (this.y % 2 == 0) {
+                        this.y--;
+                    } else {
+                        this.y++;
+                    }
+                }
+                this.x = Board.column - 1;
+            }
+
+            if (this.y < 0) {
+                if (this.x == Board.column - 1) {
+                    dir = Direction.W;
+                } else {
+                    dir = Direction.S;
+                    if (this.x % 2 == 0) {
+                        this.x++;
+                    } else {
+                        this.x--;
+                    }
+                }
+                this.y = 0;
+            }
+
+            if (this.y >= Board.row) {
+                if (this.x == 0) {
+                    dir = Direction.E;
+                } else {
+                    dir = Direction.N;
+                    if (this.x % 2 == 0) {
+                        this.x--;
+                    } else {
+                        this.x++;
+                    }
+                }
+                this.y = Board.row - 1;
+            }
         }
     }
 
