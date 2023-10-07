@@ -2,6 +2,7 @@ package comp1110.ass2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Marrakech {
@@ -109,7 +110,26 @@ public class Marrakech {
      */
     public static boolean isGameOver(String currentGame) {
         // FIXME: Task 8
-        return false;
+        ArrayList<String> players = new ArrayList<>();
+        for (int i = 0; i <= currentGame.length() - 8; i++) {
+            if (currentGame.charAt(i) == 'P') {
+                String substring = currentGame.substring(i, i + 8);
+                players.add(substring);
+            }
+        }
+        int quitGameNumber = 0;
+        for (String player: players) {
+            System.out.println(player.charAt(7));
+            if (player.charAt(7)=='o'){
+                quitGameNumber++;
+                continue;
+            }
+            if (player.charAt(5)=='0'&& player.charAt(6)=='0'&& player.charAt(7)=='i'){
+                quitGameNumber++;
+            }
+        }
+        System.out.println(players);
+        return quitGameNumber==4;
     }
 
     /**
