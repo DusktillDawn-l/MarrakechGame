@@ -229,10 +229,58 @@ public class Marrakech {
      * @param gameString A String representation of the current state of the game.
      * @return The amount of payment due, as an integer.
      */
+
     public static int getPaymentAmount(String gameString) {
-        // FIXME: Task 11
-        return -1;
+        int amount = 0;
+        String assam = "";
+        String board = "";
+        String[][] boardArray = new String[7][7];
+        int row, column;
+
+        // Get row, column, and board string from game string
+        int assamIndex = gameString.indexOf('A');
+        int boardIndex = gameString.indexOf('B');
+        assam = gameString.substring(assamIndex, assamIndex + 4);
+        board = gameString.substring(boardIndex + 1);
+
+        row = Integer.parseInt(String.valueOf(assam.charAt(1)));
+        column = Integer.parseInt(String.valueOf(assam.charAt(2)));
+
+        // Convert string to 2d array
+        int index = 0;
+        for (int boardRow = 0; boardRow < 7; boardRow++) {
+            for (int boardColumn = 0; boardColumn < 7; boardColumn++) {
+                boardArray[boardRow][boardColumn] = board.substring(index, index + 3);
+                index += 3;
+            }
+        }
+
+        if (boardArray[row][column].charAt(0) == 'n') {
+            return 0;
+        } else {
+            char color = boardArray[row][column].charAt(0);
+            boolean[][] visited = new boolean[7][7]; // To avoid infinite loop
+            amount = traverse(boardArray, row, column, color, 0, visited);
+        }
+        return amount;
     }
+
+    public static int traverse(String[][] boardArray, int row, int column, char color, int amount, boolean[][] visited) {
+        if (row < 0 || row >= 7 || column < 0 || column >= 7 || visited[row][column] || boardArray[row][column].charAt(0) != color) {
+            return amount;
+        }
+
+        visited[row][column] = true;
+        amount++;
+
+        amount = traverse(boardArray, row + 1, column, color, amount, visited);
+        amount = traverse(boardArray, row - 1, column, color, amount, visited);
+        amount = traverse(boardArray, row, column + 1, color, amount, visited);
+        amount = traverse(boardArray, row, column - 1, color, amount, visited);
+
+        return amount;
+    }
+
 
     /**
      * Determine the winner of a game of Marrakech.
