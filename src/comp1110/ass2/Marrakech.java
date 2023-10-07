@@ -142,8 +142,57 @@ public class Marrakech {
      * @return true if the placement is valid, and false otherwise.
      */
     public static boolean isPlacementValid(String gameState, String rug) {
-        // FIXME: Task 10
-        return false;
+        String assamAndBoard = gameState.split("A")[1];
+        String assam = assamAndBoard.substring(0, 3);
+        String boardState = assamAndBoard.substring(4);
+        int assamPosX = Character.getNumericValue(assam.charAt(0));
+        int assamPosY = Character.getNumericValue(assam.charAt(1));
+
+        int x1 = Integer.parseInt(rug.substring(3, 4));
+        int y1 = Integer.parseInt(rug.substring(4, 5));
+        int x2 = Integer.parseInt(rug.substring(5, 6));
+        int y2 = Integer.parseInt(rug.substring(6, 7));
+
+        boolean defaultValidation = false;
+
+        if (x1 < 0 || x1 > 6 || x2 < 0 || x2 > 6 || y1 < 0 || y1 > 6 || y2 < 0 || y2 > 6) {
+            return false;
+        }
+
+        // Check whether the new rug must have one edge adjacent to Assam
+        if (x1 == assamPosX && (Math.abs(assamPosY - y1) == 1)) {
+            if (x2 != assamPosX || y2 != assamPosY) {
+                    defaultValidation = true;
+            }
+        }
+        else if (y1 == assamPosY && (Math.abs(assamPosX - x1) == 1)) {
+            if (x2 != assamPosX || y2 != assamPosY) {
+                defaultValidation = true;
+            }
+        }
+        if (x2 == assamPosX && (Math.abs(assamPosY - y2) == 1)) {
+            if (x1 != assamPosX || y1 != assamPosY) {
+                defaultValidation = true;
+            }
+        }
+        else if (y2 == assamPosY && (Math.abs(assamPosX - x2) == 1)) {
+            if (x1 != assamPosX || y1 != assamPosY) {
+                defaultValidation = true;
+            }
+        }
+
+        char boardColor1 = boardState.charAt(3 * (x1 * 7 + y1));
+        char boardColor2 = boardState.charAt(3 * (x2 * 7 + y2));
+        String boardID1 = boardState.substring(3*(x1 * 7 + y1) + 1, 3*(x1 * 7 + y1) + 3);
+        String boardID2 = boardState.substring(3*(x2 * 7 + y2) + 1, 3*(x2 * 7 + y2) + 3);
+
+        if (boardColor1 != 'n' && boardColor2 != 'n') {
+            if (boardColor1 == boardColor2 && boardID1.equals(boardID2)) {
+                defaultValidation = false; // Rug placement completely covers another rug
+            }
+        }
+
+        return defaultValidation;
     }
 
     /**
