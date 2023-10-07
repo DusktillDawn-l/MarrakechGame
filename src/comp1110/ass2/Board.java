@@ -1,8 +1,8 @@
 package comp1110.ass2;
 
 public class Board {
-    private static final int row = 7;
-    private static final int column = 7;
+    public static final int row = 7;
+    public static final int column = 7;
     public static String[][] board = new String[row][column];
     public Board() {
         for (int i = 0; i < row; i++) {

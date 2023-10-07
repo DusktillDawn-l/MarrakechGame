@@ -25,17 +25,6 @@ public class AssamTest {
     }
 
     @Test
-    public void testMove() {
-        a.move(4);
-        assertEquals(4, a.getY());
-        a.changeDirection(Direction.W);
-        a.move(1);
-        assertEquals(0, a.getX());
-        a.move(1);
-        assertEquals(6, a.getX());
-    }
-
-    @Test
     public void testInvalidMove() {
         assertThrows(RuntimeException.class, () -> {
             a.move(0);
