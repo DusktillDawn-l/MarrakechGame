@@ -49,6 +49,8 @@ public class Player {
      * @param anotherPlayer the player you need to pay
      */
     public void payment(Player anotherPlayer,int amount){
+        dirhams-=amount;
+        anotherPlayer.dirhams+=amount;
     }
 
     @Override
