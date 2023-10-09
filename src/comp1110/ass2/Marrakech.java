@@ -8,24 +8,41 @@ import java.util.Random;
 import static comp1110.ass2.Helper.*;
 
 public class Marrakech {
-    private static Board board = new Board();
-    private static Assam assam = new Assam(3,3,Direction.N);
-//    private char[][] board = new char[7][7];
-    private static ArrayList<Player> playerList = new ArrayList<Player>();
-    private static ArrayList<Rug> rugList = new ArrayList<Rug>();
+    private Board board;
+    private Assam assam;
+    private ArrayList<Player> playerList;
+    private ArrayList<Rug> rugList;
 
-
+    public Marrakech() {
+        this.board = new Board();
+        this.assam = new Assam(3, 3, Direction.N);
+        this.playerList = new ArrayList<>();
+        this.rugList = new ArrayList<>();
+    }
 
     //check how many same color rugs are connected with the given coordinate.
-    public int connectedRugs (int x, int y){
+    public int connectedRugs(int x, int y) {
         //TODO
         return 1;
     }
 
-
     // initialise game and add players
-    public void startGame () {
+    public void startGame() {
         //TODO
+    }
+
+    public void createGame(String game) {
+        createPlayers(game.split("A")[0]);
+        this.assam = new Assam("A" + game.split("A")[1].split("B")[0]);
+        String boardStr = game.split("B")[1];
+        this.board = new Board("B" + game.split("B")[1]);
+    }
+
+    public void createPlayers(String players) {
+        for (int i = 0; i < players.length() / 8; i = i + 1) {
+            Player p = new Player(players.substring(i * 8, (i + 1) * 8));
+            this.playerList.add(p);
+        }
     }
     /**
      * Determine whether a rug String is valid.
@@ -361,7 +378,6 @@ public class Marrakech {
         }
 
         return 't';
-        // FIXME: Task 12
     }
 
     /**
@@ -393,17 +409,29 @@ public class Marrakech {
      * or the input currentGame unchanged otherwise.
      */
     public static String makePlacement(String currentGame, String rug) {
-        // FIXME: Task 14
-        return "";
+        if (isPlacementValid(currentGame, rug) && isRugValid(currentGame, rug)){
+            Marrakech game = new Marrakech();
+            game.createGame(currentGame);
+            game.board.placeRug(rug);
+            Rug r = new Rug(rug);
+            for (Player p : game.playerList){
+                if (r.getColor() == p.getColor()){
+                    p.placeRug();
+                }
+            }
+            return game.getGameString();
+        } else {
+            return currentGame;
+        }
     }
 
-    public static String getGameString(){
+    public String getGameString() {
         StringBuilder gameStringBuilder = new StringBuilder();
-        for (Player player: playerList) {
+        for (Player player : this.playerList) {
             gameStringBuilder.append(player.toString());
         }
-        gameStringBuilder.append(assam.toString());
-        gameStringBuilder.append(board.toString());
+        gameStringBuilder.append(this.assam.toString());
+        gameStringBuilder.append(this.board.toString());
         return gameStringBuilder.toString();
     }
 

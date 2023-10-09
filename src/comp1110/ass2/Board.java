@@ -37,6 +37,13 @@ public class Board {
         board[row][column] = abbrRugString;
     }
 
+    // Add a rug to the board from rug string
+    public void placeRug(String rug){
+        String abbrRug = rug.substring(0,3);
+        board[Character.getNumericValue(rug.charAt(3))][Character.getNumericValue(rug.charAt(4))] = abbrRug;
+        board[Character.getNumericValue(rug.charAt(5))][Character.getNumericValue(rug.charAt(6))] = abbrRug;
+    }
+
     @Override
     public String toString() {
         StringBuilder boardString= new StringBuilder("B");

@@ -27,7 +27,7 @@ public class Rug {
     }
 
     public Rug(String rugString) {//使用此构造函数的潜在问题：导致rug的id不连贯
-        if (rugString.length()!=rugStringLength||Integer.parseInt(rugString.substring(1,3))<= rugId)
+        if (rugString.length()!=rugStringLength)
             throw new RuntimeException("Invalid Rug String");
         else{
             this.x1 = Character.getNumericValue(rugString.charAt(x1CoordinateDigit));
