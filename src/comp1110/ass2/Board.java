@@ -17,9 +17,11 @@ public class Board {
             throw new RuntimeException("Invalid board string");
         else {
             boardString = boardString.substring(1);
+            int count = 0;
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < column; j++) {
-                    board[i][j]= boardString.substring(i*3,(i+1)*3);
+                    board[i][j]= boardString.substring(count*3,(count+1)*3);
+                    count+=1;
                 }
             }
         }
@@ -37,12 +39,12 @@ public class Board {
 
     @Override
     public String toString() {
-        String boardString="B";
+        StringBuilder boardString= new StringBuilder("B");
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                boardString+=board[i][j];
+                boardString.append(board[i][j]);
             }
         }
-        return boardString;
+        return boardString.toString();
     }
 }
