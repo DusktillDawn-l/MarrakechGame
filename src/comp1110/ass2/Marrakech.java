@@ -8,16 +8,16 @@ import java.util.Random;
 import static comp1110.ass2.Helper.*;
 
 public class Marrakech {
-    private Board board;
-    private Assam assam;
-    private ArrayList<Player> playerList;
-    private ArrayList<Rug> rugList;
+    private static Board board;
+    private static Assam assam;
+    private static ArrayList<Player> playerList = new ArrayList<>();
+    private static ArrayList<Rug> rugList = new ArrayList<>();
 
     public Marrakech() {
-        this.board = new Board();
-        this.assam = new Assam(3, 3, Direction.N);
-        this.playerList = new ArrayList<>();
-        this.rugList = new ArrayList<>();
+        board = new Board();
+        assam = new Assam(3, 3, Direction.N);
+        playerList = new ArrayList<>();
+        rugList = new ArrayList<>();
     }
 
     //check how many same color rugs are connected with the given coordinate.
@@ -31,17 +31,17 @@ public class Marrakech {
         //TODO
     }
 
-    public void createGame(String game) {
+    public static void createGame(String game) {
         createPlayers(game.split("A")[0]);
-        this.assam = new Assam("A" + game.split("A")[1].split("B")[0]);
+        assam = new Assam("A" + game.split("A")[1].split("B")[0]);
         String boardStr = game.split("B")[1];
-        this.board = new Board("B" + game.split("B")[1]);
+        board = new Board("B" + game.split("B")[1]);
     }
 
-    public void createPlayers(String players) {
+    public static void createPlayers(String players) {
         for (int i = 0; i < players.length() / 8; i = i + 1) {
             Player p = new Player(players.substring(i * 8, (i + 1) * 8));
-            this.playerList.add(p);
+            playerList.add(p);
         }
     }
     /**
@@ -357,7 +357,8 @@ public class Marrakech {
             // find the dihams of each player
             int lastC = playerStr.lastIndexOf("Pc");
             int lastY = playerStr.lastIndexOf("Py");
-            int lastR = playerStr.lastIndexOf("Pr");
+            int lastR = playerStr.lastIndexOf("P" +
+                    "r");
             int lastP = playerStr.lastIndexOf("Pp");
 
             int dirhamC = Integer.parseInt(playerStr.substring(2 + lastC, 5 + lastC));

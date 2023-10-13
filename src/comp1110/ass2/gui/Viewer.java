@@ -4,13 +4,16 @@ import comp1110.ass2.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import comp1110.ass2.Helper.*;
@@ -178,15 +181,74 @@ public class Viewer extends Application {
         controls.getChildren().add(hb);
     }
 
+    private VBox createPlayerSelectionInterface() {
+        Text p = new Text();
+        p.setText("Marrakech");
+        p.setStyle("-fx-font: 50 arial;");
+        p.setX(400);
+        p.setY(350);
+        Label label = new Label("Select Number of Player");
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setAlignment(Pos.CENTER);
+        label.setStyle("-fx-font-size: 24;");  // Adjust as necessary
+
+        // Create a choice box with player numbers 2 to 4
+        ChoiceBox<Integer> choiceBox = new ChoiceBox<>();
+        choiceBox.getItems().addAll(2, 3, 4);
+        choiceBox.setStyle("-fx-font-size: 24;");
+        choiceBox.setValue(2);  // Set default value
+        choiceBox.setMaxSize(200, 50);
+        choiceBox.setMinSize(200, 50);
+
+        // Create a confirm button
+        Button confirmButton = new Button("Confirm");
+        confirmButton.setMaxSize(200, 50);
+        confirmButton.setMinSize(200, 50);
+        //在这里进行了游戏玩家数与棋盘的初始化
+        confirmButton.setOnAction(e -> {
+            int selectedValue = choiceBox.getValue();
+            switch (selectedValue){
+                case 2:
+                    Marrakech.createGame("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+                    break;
+                case 3:
+                    Marrakech.createGame("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+                    break;
+                case 4:
+                    Marrakech.createGame("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+                    break;
+
+            }
+            System.out.println("Selected player number: " + selectedValue);
+        });
+
+        // Create a VBox to hold the label, choice box and button
+        VBox vbox = new VBox(20);  // 20 is the spacing between elements
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setFillWidth(true);
+        vbox.getChildren().addAll(p,label, choiceBox, confirmButton);
+        return vbox;
+    }
+//旧的代码
+//    @Override
+//    public void start(Stage primaryStage) throws Exception {
+//        primaryStage.setTitle("Marrakech Viewer");
+//        Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
+//
+//        root.getChildren().add(controls);
+//
+//        makeControls();
+//
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
+//    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Marrakech Viewer");
-        Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
-
-        root.getChildren().add(controls);
-
-        makeControls();
-
+//        displayState("Pc05800iPy02400iPp02900iPr00900iA20WBc18r17r19y15y14p08n00r22p07r19p11y11r08c14p29p29y27c04c11c11c14y18c17c25y25y08p25r18y18c17c26c26r21p25c19r12p26p27n00r21p06c21r15p24p27r28r28n00c21");
+        VBox vbox = createPlayerSelectionInterface();
+        // Set up the scene and stage
+        Scene scene = new Scene(vbox, 1200, 700);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

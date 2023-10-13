@@ -19,14 +19,17 @@ public class Game extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // FIXME Task 7 and 15
-        Text p = new Text();
-        p.setText("GAME START");
-        p.setStyle("-fx-font: 50 arial;");
-        p.setX(400);
-        p.setY(350);
-        root.getChildren().add(p);
-        Scene scene = new Scene(this.root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        stage.setScene(scene);
-        stage.show();
+// 旧的代码
+//        Text p = new Text();
+//        p.setText("GAME START");
+//        p.setStyle("-fx-font: 50 arial;");
+//        p.setX(400);
+//        p.setY(350);
+//        root.getChildren().add(p);
+//        Scene scene = new Scene(this.root, WINDOW_WIDTH, WINDOW_HEIGHT);
+//        stage.setScene(scene);
+//        stage.show();
+        Viewer viewer = new Viewer();
+        viewer.start(stage);
     }
 }
