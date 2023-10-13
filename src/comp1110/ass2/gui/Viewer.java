@@ -66,12 +66,14 @@ public class Viewer extends Application {
                 pane.getChildren().add(square);
             }
         }
-
-        Scene scene = new Scene(pane, 1200, 700);
-        Stage primaryStage = new Stage();
-        primaryStage.setTitle("Board");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        //切换到displayState的界面
+        root.getChildren().clear();
+        root.getChildren().add(pane);
+//        Scene scene = new Scene(pane, 1200, 700);
+//        Stage primaryStage = new Stage();
+//        primaryStage.setTitle("Board");
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
 
         String[] splits = state.split("A");
         String playerStr = splits[0];
@@ -181,7 +183,7 @@ public class Viewer extends Application {
         controls.getChildren().add(hb);
     }
 
-    private VBox createPlayerSelectionInterface() {
+    private void createPlayerSelectionInterface() {
         Text p = new Text();
         p.setText("Marrakech");
         p.setStyle("-fx-font: 50 arial;");
@@ -204,18 +206,23 @@ public class Viewer extends Application {
         Button confirmButton = new Button("Confirm");
         confirmButton.setMaxSize(200, 50);
         confirmButton.setMinSize(200, 50);
+
+
         //在这里进行了游戏玩家数与棋盘的初始化
         confirmButton.setOnAction(e -> {
             int selectedValue = choiceBox.getValue();
             switch (selectedValue){
                 case 2:
                     Marrakech.createGame("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+                    displayState("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     break;
                 case 3:
                     Marrakech.createGame("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+                    displayState("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     break;
                 case 4:
                     Marrakech.createGame("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+                    displayState("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     break;
 
             }
@@ -226,9 +233,31 @@ public class Viewer extends Application {
         VBox vbox = new VBox(20);  // 20 is the spacing between elements
         vbox.setAlignment(Pos.CENTER);
         vbox.setFillWidth(true);
-        vbox.getChildren().addAll(p,label, choiceBox, confirmButton);
-        return vbox;
+        vbox.getChildren().addAll(p, label, choiceBox, confirmButton);
+
+// Set a preferred size for the VBox (optional, but helps with centering)
+        vbox.setPrefSize(300, 300);  // Example dimensions, adjust as needed
+
+// Assuming root is of type Pane or AnchorPane
+        root.getChildren().add(vbox);
+
+// Bind layoutX and layoutY properties of the VBox to center it in root
+        vbox.setLayoutX((VIEWER_WIDTH - vbox.getPrefWidth()) / 2);
+        vbox.setLayoutY((VIEWER_HEIGHT - vbox.getPrefHeight()) / 2);
+
+
     }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        createPlayerSelectionInterface();
+        // Set up the scene and stage
+        Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+}
+
 //旧的代码
 //    @Override
 //    public void start(Stage primaryStage) throws Exception {
@@ -242,14 +271,3 @@ public class Viewer extends Application {
 //        primaryStage.setScene(scene);
 //        primaryStage.show();
 //    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-//        displayState("Pc05800iPy02400iPp02900iPr00900iA20WBc18r17r19y15y14p08n00r22p07r19p11y11r08c14p29p29y27c04c11c11c14y18c17c25y25y08p25r18y18c17c26c26r21p25c19r12p26p27n00r21p06c21r15p24p27r28r28n00c21");
-        VBox vbox = createPlayerSelectionInterface();
-        // Set up the scene and stage
-        Scene scene = new Scene(vbox, 1200, 700);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-}
