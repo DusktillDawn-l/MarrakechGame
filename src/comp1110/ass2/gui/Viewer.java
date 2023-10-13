@@ -60,7 +60,7 @@ public class Viewer extends Application {
                 double y = 70 + row * (boardSize + gapSize);
 
                 Rectangle square = new Rectangle((int) x, (int) y, boardSize, boardSize);
-                square.setFill(Color.WHITE);
+                square.setFill(Color.ORANGE);
                 square.setStroke(Color.BLACK);
                 rectangles.add(square);
                 pane.getChildren().add(square);
@@ -222,7 +222,7 @@ public class Viewer extends Application {
                     break;
                 case 4:
                     Marrakech.createGame("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-                    displayState("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+                    displayState("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     break;
 
             }
@@ -235,18 +235,18 @@ public class Viewer extends Application {
         vbox.setFillWidth(true);
         vbox.getChildren().addAll(p, label, choiceBox, confirmButton);
 
-// Set a preferred size for the VBox (optional, but helps with centering)
+        // Set a preferred size for the VBox (optional, but helps with centering)
         vbox.setPrefSize(300, 300);  // Example dimensions, adjust as needed
 
-// Assuming root is of type Pane or AnchorPane
+        // Assuming root is of type Pane or AnchorPane
         root.getChildren().add(vbox);
 
-// Bind layoutX and layoutY properties of the VBox to center it in root
+        // Bind layoutX and layoutY properties of the VBox to center it in root
         vbox.setLayoutX((VIEWER_WIDTH - vbox.getPrefWidth()) / 2);
         vbox.setLayoutY((VIEWER_HEIGHT - vbox.getPrefHeight()) / 2);
-
-
     }
+
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
