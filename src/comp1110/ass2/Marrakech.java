@@ -20,16 +20,6 @@ public class Marrakech {
         rugList = new ArrayList<>();
     }
 
-    //check how many same color rugs are connected with the given coordinate.
-    public int connectedRugs(int x, int y) {
-        //TODO
-        return 1;
-    }
-
-    // initialise game and add players
-    public void startGame() {
-        //TODO
-    }
 
     public static void createGame(String game) {
         createPlayers(game.split("A")[0]);
@@ -38,11 +28,24 @@ public class Marrakech {
         board = new Board("B" + game.split("B")[1]);
     }
 
+    public static void updateBoard(String game) {
+        board = new Board("B" + game.split("B")[1]);
+    }
+
     public static void createPlayers(String players) {
         for (int i = 0; i < players.length() / 8; i = i + 1) {
             Player p = new Player(players.substring(i * 8, (i + 1) * 8));
             playerList.add(p);
         }
+    }
+
+    public static Player getPlayerFromColor(char color) {
+        for (Player p : playerList) {
+            if (p.getColor().getColor() == color) {
+                return p;
+            }
+        }
+        throw new RuntimeException("No such player");
     }
     /**
      * Determine whether a rug String is valid.
@@ -128,7 +131,6 @@ public class Marrakech {
      * @return true if the game is over, or false otherwise.
      */
     public static boolean isGameOver(String currentGame) {
-        // FIXME: Task 8
         ArrayList<String> players = new ArrayList<>();
         for (int i = 0; i <= currentGame.length() - 8; i++) {
             if (currentGame.charAt(i) == 'P') {
@@ -138,7 +140,6 @@ public class Marrakech {
         }
         int quitGameNumber = 0;
         for (String player: players) {
-            System.out.println(player.charAt(7));
             if (player.charAt(7)=='o'){
                 quitGameNumber++;
                 continue;

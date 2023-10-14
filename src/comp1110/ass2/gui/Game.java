@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 import static comp1110.ass2.Helper.charToColor;
+import static comp1110.ass2.Helper.charToColorStr;
 
 public class Game extends Application {
 
@@ -29,6 +30,7 @@ public class Game extends Application {
     private static final int WINDOW_WIDTH = 1200;
     private static final int WINDOW_HEIGHT = 700;
     private int numberOfRotationsInOneRound =0;
+    String initialGameState = "";
 
     void displayState(String state) {
         int boardSize = 80;
@@ -204,6 +206,7 @@ public class Game extends Application {
         pane.getChildren().addAll(assamArrow);
     }
 
+    // Create players and return the game string
     private void createPlayerSelectionInterface() {
         Text p = new Text();
         p.setText("Marrakech");
@@ -227,7 +230,7 @@ public class Game extends Application {
         Button confirmButton = new Button("Confirm");
         confirmButton.setMaxSize(200, 50);
         confirmButton.setMinSize(200, 50);
-
+        
 
         //在这里进行了游戏玩家数与棋盘的初始化
         confirmButton.setOnAction(e -> {
@@ -235,19 +238,24 @@ public class Game extends Application {
             switch (selectedValue){
                 case 2:
                     Marrakech.createGame("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-                    displayState("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+//                    displayState("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+                    initialGameState = "Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
+                    gameStart(initialGameState);
                     break;
                 case 3:
                     Marrakech.createGame("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-                    displayState("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+//                    displayState("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+                    initialGameState = "Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
+                    gameStart(initialGameState);
                     break;
                 case 4:
                     Marrakech.createGame("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-                    displayState("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+//                    displayState("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+                    initialGameState = "Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
+                    gameStart(initialGameState);
                     break;
-
             }
-            System.out.println("Selected player number: " + selectedValue);
+
         });
 
         // Create a VBox to hold the label, choice box and button
@@ -266,6 +274,40 @@ public class Game extends Application {
         vbox.setLayoutX((WINDOW_WIDTH - vbox.getPrefWidth()) / 2);
         vbox.setLayoutY((WINDOW_HEIGHT - vbox.getPrefHeight()) / 2);
     }
+
+    // check game over and display the winner
+    public boolean checkWinner(String gameState) {
+        char winner = Marrakech.getWinner(gameState);
+        if (winner == 'n') { return false; }
+        Text p = new Text();
+        p.setText("Winner is Player " + charToColorStr(winner));
+        p.setStyle("-fx-font: 50 arial;");
+        p.setFill(charToColor(winner));
+        p.setX(400);
+        p.setY(350);
+        root.getChildren().add(p);
+        return true;
+    }
+
+    public void gameStart(String gameState){
+        createPlayerSelectionInterface();
+        while (!checkWinner(gameState)){
+            for (Player p : Marrakech.playerList){
+                displayState(gameState);
+                // rotate Assam
+                // move Assam
+                // make payment
+                Marrakech.updateBoard(gameState);
+                char currentColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
+                if (currentColor != p.getColor().getColor()) {
+                    Player anotherPlayer = Marrakech.getPlayerFromColor(currentColor);
+                    p.payment(anotherPlayer, Marrakech.getPaymentAmount(gameState));
+                }
+                // place rug
+            }
+        }
+    }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
