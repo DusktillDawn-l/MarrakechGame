@@ -393,8 +393,9 @@ public class Marrakech {
      * @return A String representing Assam's state after the movement.
      */
     public static String moveAssam(String currentAssam, int dieResult){
-        Assam assam = new Assam(currentAssam);
-        assam.move(dieResult);
+        Assam newAssam = new Assam(currentAssam);
+        newAssam.move(dieResult);
+        assam = newAssam;
         return assam.toString();
     }
 
