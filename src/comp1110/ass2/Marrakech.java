@@ -147,7 +147,6 @@ public class Marrakech {
                 quitGameNumber++;
             }
         }
-        System.out.println(players);
         return quitGameNumber==4;
     }
 
@@ -165,8 +164,8 @@ public class Marrakech {
      * rotation is illegal.
      */
     public static String rotateAssam(String currentAssam, int rotation) {
-        // The only valid degrees are 90 and 270
-//        Assam assam = new Assam(currentAssam);
+//         The only valid degrees are 90 and 270
+        Assam assam = new Assam(currentAssam);
         assam.changeDirection(rotation);
         return assam.toString();
     }
@@ -411,8 +410,8 @@ public class Marrakech {
      */
     public static String makePlacement(String currentGame, String rug) {
         if (isPlacementValid(currentGame, rug) && isRugValid(currentGame, rug)){
-//            Marrakech game = new Marrakech();
-//            game.createGame(currentGame);
+            Marrakech game = new Marrakech();
+            createGame(currentGame);
             board.placeRug(rug);
             Rug r = new Rug(rug);
             for (Player p : playerList){
@@ -425,6 +424,7 @@ public class Marrakech {
             return currentGame;
         }
     }
+
 
     public static String getGameString() {
         StringBuilder gameStringBuilder = new StringBuilder();

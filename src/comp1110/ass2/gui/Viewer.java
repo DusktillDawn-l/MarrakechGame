@@ -47,6 +47,7 @@ public class Viewer extends Application {
     /**
      * Draw a placement in the window, removing any previously drawn placements
      * The default color (not painted square) is orange
+     *
      * @param state an array of two strings, representing the current game state
      */
 
@@ -108,7 +109,6 @@ public class Viewer extends Application {
         }
 
 
-
         String assamAndBoard = splits[1];
         String assam = assamAndBoard.substring(0, 3);
         String board = assamAndBoard.substring(4);
@@ -163,9 +163,9 @@ public class Viewer extends Application {
     }
 
 
-        /**
-         * Create a basic text field for input and a refresh button.
-         */
+    /**
+     * Create a basic text field for input and a refresh button.
+     */
     private void makeControls() {
         Label boardLabel = new Label("Game State:");
         boardTextField = new TextField();
@@ -186,105 +186,20 @@ public class Viewer extends Application {
         controls.getChildren().add(hb);
     }
 
-    private void createPlayerSelectionInterface() {
-        Text p = new Text();
-        p.setText("Marrakech");
-        p.setStyle("-fx-font: 50 arial;");
-        p.setX(400);
-        p.setY(350);
-        Label label = new Label("Select Number of Player");
-        label.setMaxWidth(Double.MAX_VALUE);
-        label.setAlignment(Pos.CENTER);
-        label.setStyle("-fx-font-size: 24;");  // Adjust as necessary
-
-        // Create a choice box with player numbers 2 to 4
-        ChoiceBox<Integer> choiceBox = new ChoiceBox<>();
-        choiceBox.getItems().addAll(2, 3, 4);
-        choiceBox.setStyle("-fx-font-size: 24;");
-        choiceBox.setValue(2);  // Set default value
-        choiceBox.setMaxSize(200, 50);
-        choiceBox.setMinSize(200, 50);
-
-        // Create a confirm button
-        Button confirmButton = new Button("Confirm");
-        confirmButton.setMaxSize(200, 50);
-        confirmButton.setMinSize(200, 50);
 
 
-        //在这里进行了游戏玩家数与棋盘的初始化
-        confirmButton.setOnAction(e -> {
-            int selectedValue = choiceBox.getValue();
-            switch (selectedValue){
-                case 2:
-                    Marrakech.createGame("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-                    displayState("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-                    break;
-                case 3:
-                    Marrakech.createGame("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-                    displayState("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-                    break;
-                case 4:
-                    Marrakech.createGame("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-                    displayState("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-                    break;
 
-            }
-            System.out.println("Selected player number: " + selectedValue);
-        });
-
-        // Create a VBox to hold the label, choice box and button
-        VBox vbox = new VBox(20);  // 20 is the spacing between elements
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setFillWidth(true);
-        vbox.getChildren().addAll(p, label, choiceBox, confirmButton);
-
-        // Set a preferred size for the VBox (optional, but helps with centering)
-        vbox.setPrefSize(300, 300);  // Example dimensions, adjust as needed
-
-        // Assuming root is of type Pane or AnchorPane
-        root.getChildren().add(vbox);
-
-        // Bind layoutX and layoutY properties of the VBox to center it in root
-        vbox.setLayoutX((VIEWER_WIDTH - vbox.getPrefWidth()) / 2);
-        vbox.setLayoutY((VIEWER_HEIGHT - vbox.getPrefHeight()) / 2);
-    }
-
-    public void move(boolean movePhase){
-        if (movePhase){
-            root.setOnKeyPressed(event -> {
-                if (event.getCode() == KeyCode.A) {
-                    Marrakech.rotateAssam(Marrakech.assam.toString(),90);
-                    System.out.println(Marrakech.assam.getDirection());
-                }
-                if (event.getCode() == KeyCode.D) {
-                    Marrakech.rotateAssam(Marrakech.assam.toString(),270);
-                    System.out.println(Marrakech.assam.getDirection());
-                }
-            });
-        }
-    }
-
-
+    //旧的代码
     @Override
     public void start(Stage primaryStage) throws Exception {
-        createPlayerSelectionInterface();
-        // Set up the scene and stage
+        primaryStage.setTitle("Marrakech Viewer");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
+
+        root.getChildren().add(controls);
+
+        makeControls();
+
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 }
-
-//旧的代码
-//    @Override
-//    public void start(Stage primaryStage) throws Exception {
-//        primaryStage.setTitle("Marrakech Viewer");
-//        Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
-//
-//        root.getChildren().add(controls);
-//
-//        makeControls();
-//
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
-//    }
