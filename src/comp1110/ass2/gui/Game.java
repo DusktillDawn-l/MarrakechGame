@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -82,14 +84,41 @@ public class Game extends Application {
                 numberOfRotationsInOneRound++;
                 displayState(Marrakech.getGameString());
             }
-
         });
+
         pane.getChildren().addAll(leftArrow, rightArrow);
 
+
+        int diceSize = 60;
+        Rectangle diceSquare = new Rectangle(WINDOW_WIDTH - diceSize, WINDOW_HEIGHT - diceSize, diceSize, diceSize);
+        diceSquare.setFill(Color.WHITE);
+        diceSquare.setStroke(Color.BLACK);
+
+        // Create a Text component to display the number of the side of the dice
+        Text diceNumber = new Text();
+        diceNumber.setX(1200 - diceSize + 20);
+        diceNumber.setY(700 - diceSize + 40);
+        int initialDiceValue = 1;
+        diceNumber.setText(String.valueOf(initialDiceValue));
+
+
+        diceSquare.setOnMouseClicked(e -> {
+            // Set the default value of the die to 1
+            int randomDiceValue = Marrakech.rollDie();
+            diceNumber.setText(String.valueOf(randomDiceValue));
+            Marrakech.assam.move(randomDiceValue);
+            displayState(Marrakech.getGameString());
+        });
+
+        diceNumber.setFill(Color.BLACK);
+        diceNumber.setFont(Font.font(36));
+        pane.getChildren().addAll(diceSquare, diceNumber);
 
         //切换到displayState的界面
         root.getChildren().clear();
         root.getChildren().add(pane);
+
+
 
         String[] splits = state.split("A");
         String playerStr = splits[0];
