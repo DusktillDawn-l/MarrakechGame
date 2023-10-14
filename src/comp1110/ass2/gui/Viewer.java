@@ -41,9 +41,6 @@ public class Viewer extends Application {
     private final Group controls = new Group();
     private TextField boardTextField;
 
-    private Boolean movePhase = false;
-
-
     /**
      * Draw a placement in the window, removing any previously drawn placements
      * The default color (not painted square) is orange

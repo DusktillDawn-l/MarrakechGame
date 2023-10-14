@@ -52,30 +52,30 @@ public class Game extends Application {
         // 创建左转箭头
         Polygon leftArrow = new Polygon();
         leftArrow.getPoints().addAll(
-                100.0, 300.0,  // 左侧顶点
-                150.0, 350.0,  // 下方顶点
-                150.0, 250.0   // 上方顶点
+                1000.0, 300.0,  // 左侧顶点
+                1050.0, 350.0,  // 下方顶点
+                1050.0, 250.0   // 上方顶点
         );
         leftArrow.setFill(Color.BLACK);
 
         // 创建右转箭头
         Polygon rightArrow = new Polygon();
         rightArrow.getPoints().addAll(
-                200.0, 300.0,  // 右侧顶点
-                150.0, 350.0,  // 下方顶点
-                150.0, 250.0   // 上方顶点
+                1150.0, 300.0,  // 右侧顶点
+                1100.0, 350.0,  // 下方顶点
+                1100.0, 250.0   // 上方顶点
         );
         rightArrow.setFill(Color.BLACK);
 
         leftArrow.setOnMouseClicked(e -> {
             // 这里执行左转操作
-            String newAssamString = Marrakech.rotateAssam(Marrakech.assam.toString(), 270);
+            Marrakech.rotateAssam(Marrakech.assam.toString(), 270);
             displayState(Marrakech.getGameString());
         });
 
         rightArrow.setOnMouseClicked(e -> {
             // 这里执行右转操作
-            String newAssamString = Marrakech.rotateAssam(Marrakech.assam.toString(), 90);
+            Marrakech.rotateAssam(Marrakech.assam.toString(), 90);
             displayState(Marrakech.getGameString());
         });
         pane.getChildren().addAll(leftArrow, rightArrow);
@@ -84,11 +84,6 @@ public class Game extends Application {
         //切换到displayState的界面
         root.getChildren().clear();
         root.getChildren().add(pane);
-//        Scene scene = new Scene(pane, 1200, 700);
-//        Stage primaryStage = new Stage();
-//        primaryStage.setTitle("Board");
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
 
         String[] splits = state.split("A");
         String playerStr = splits[0];
