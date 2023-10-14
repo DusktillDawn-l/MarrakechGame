@@ -28,7 +28,6 @@ public class Game extends Application {
     private static final int WINDOW_WIDTH = 1200;
     private static final int WINDOW_HEIGHT = 700;
 
-    private Boolean movePhase = false;
 
     void displayState(String state) {
         int boardSize = 80;
@@ -49,6 +48,39 @@ public class Game extends Application {
                 pane.getChildren().add(square);
             }
         }
+
+        // 创建左转箭头
+        Polygon leftArrow = new Polygon();
+        leftArrow.getPoints().addAll(
+                100.0, 300.0,  // 左侧顶点
+                150.0, 350.0,  // 下方顶点
+                150.0, 250.0   // 上方顶点
+        );
+        leftArrow.setFill(Color.BLACK);
+
+        // 创建右转箭头
+        Polygon rightArrow = new Polygon();
+        rightArrow.getPoints().addAll(
+                200.0, 300.0,  // 右侧顶点
+                150.0, 350.0,  // 下方顶点
+                150.0, 250.0   // 上方顶点
+        );
+        rightArrow.setFill(Color.BLACK);
+
+        leftArrow.setOnMouseClicked(e -> {
+            // 这里执行左转操作
+            String newAssamString = Marrakech.rotateAssam(Marrakech.assam.toString(), 270);
+            displayState(Marrakech.getGameString());
+        });
+
+        rightArrow.setOnMouseClicked(e -> {
+            // 这里执行右转操作
+            String newAssamString = Marrakech.rotateAssam(Marrakech.assam.toString(), 90);
+            displayState(Marrakech.getGameString());
+        });
+        pane.getChildren().addAll(leftArrow, rightArrow);
+
+
         //切换到displayState的界面
         root.getChildren().clear();
         root.getChildren().add(pane);
@@ -205,20 +237,6 @@ public class Game extends Application {
         vbox.setLayoutY((WINDOW_HEIGHT - vbox.getPrefHeight()) / 2);
     }
 
-    public void move(boolean movePhase) {
-        if (movePhase) {
-            root.setOnKeyPressed(event -> {
-                if (event.getCode() == KeyCode.A) {
-                    Marrakech.rotateAssam(Marrakech.assam.toString(), 90);
-                    System.out.println(Marrakech.assam.getDirection());
-                }
-                if (event.getCode() == KeyCode.D) {
-                    Marrakech.rotateAssam(Marrakech.assam.toString(), 270);
-                    System.out.println(Marrakech.assam.getDirection());
-                }
-            });
-        }
-    }
     @Override
     public void start(Stage primaryStage) throws Exception {
         createPlayerSelectionInterface();

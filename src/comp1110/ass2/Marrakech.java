@@ -165,8 +165,9 @@ public class Marrakech {
      */
     public static String rotateAssam(String currentAssam, int rotation) {
 //         The only valid degrees are 90 and 270
-        Assam assam = new Assam(currentAssam);
-        assam.changeDirection(rotation);
+        Assam newAssam = new Assam(currentAssam);
+        newAssam.changeDirection(rotation);
+        assam = newAssam;
         return assam.toString();
     }
 
