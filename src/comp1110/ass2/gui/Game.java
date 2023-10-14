@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
@@ -27,7 +26,7 @@ public class Game extends Application {
     private final Group root = new Group();
     private static final int WINDOW_WIDTH = 1200;
     private static final int WINDOW_HEIGHT = 700;
-
+    private int numberOfRotationsInOneRound =0;
 
     void displayState(String state) {
         int boardSize = 80;
@@ -68,15 +67,22 @@ public class Game extends Application {
         rightArrow.setFill(Color.BLACK);
 
         leftArrow.setOnMouseClicked(e -> {
-            // 这里执行左转操作
-            Marrakech.rotateAssam(Marrakech.assam.toString(), 270);
-            displayState(Marrakech.getGameString());
+                // 这里执行左转操作
+            if (numberOfRotationsInOneRound >=0){
+                Marrakech.rotateAssam(Marrakech.assam.toString(), 270);
+                numberOfRotationsInOneRound--;
+                displayState(Marrakech.getGameString());
+            }
         });
 
         rightArrow.setOnMouseClicked(e -> {
             // 这里执行右转操作
-            Marrakech.rotateAssam(Marrakech.assam.toString(), 90);
-            displayState(Marrakech.getGameString());
+            if (numberOfRotationsInOneRound <=0){
+                Marrakech.rotateAssam(Marrakech.assam.toString(), 90);
+                numberOfRotationsInOneRound++;
+                displayState(Marrakech.getGameString());
+            }
+
         });
         pane.getChildren().addAll(leftArrow, rightArrow);
 
@@ -241,16 +247,3 @@ public class Game extends Application {
         primaryStage.show();
     }
 }
-// 旧的代码
-//        Text p = new Text();
-//        p.setText("GAME START");
-//        p.setStyle("-fx-font: 50 arial;");
-//        p.setX(400);
-//        p.setY(350);
-//        root.getChildren().add(p);
-//        Scene scene = new Scene(this.root, WINDOW_WIDTH, WINDOW_HEIGHT);
-//        stage.setScene(scene);
-//        stage.show();
-//
-//    }
-//}
