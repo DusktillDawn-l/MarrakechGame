@@ -140,7 +140,6 @@ public class Marrakech {
         }
         int quitGameNumber = 0;
         for (String player: players) {
-            System.out.println(player.charAt(7));
             if (player.charAt(7)=='o'){
                 quitGameNumber++;
                 continue;
