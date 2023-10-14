@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 import static comp1110.ass2.Helper.charToColor;
+import static comp1110.ass2.Helper.charToColorStr;
 
 public class Game extends Application {
 
@@ -175,6 +176,7 @@ public class Game extends Application {
         pane.getChildren().addAll(assamArrow);
     }
 
+    // Create players and return the game string
     private void createPlayerSelectionInterface() {
         Text p = new Text();
         p.setText("Marrakech");
@@ -237,6 +239,38 @@ public class Game extends Application {
         vbox.setLayoutX((WINDOW_WIDTH - vbox.getPrefWidth()) / 2);
         vbox.setLayoutY((WINDOW_HEIGHT - vbox.getPrefHeight()) / 2);
     }
+
+    // check game over and display the winner
+    public boolean checkWinner(String gameState) {
+        char winner = Marrakech.getWinner(gameState);
+        if (winner == 'n') { return false; }
+        Text p = new Text();
+        p.setText("Winner is Player " + charToColorStr(winner));
+        p.setStyle("-fx-font: 50 arial;");
+        p.setFill(charToColor(winner));
+        p.setX(400);
+        p.setY(350);
+        root.getChildren().add(p);
+        return true;
+    }
+
+    public void gameStart(String gameState){
+        while (!checkWinner(gameState)){
+            for (Player p : Marrakech.playerList){
+                // rotate Assam
+                // move Assam
+                // make payment
+                Marrakech.updateBoard(gameState);
+                char currentColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
+                if (currentColor != p.getColor().getColor()) {
+                    Player anotherPlayer = Marrakech.getPlayerFromColor(currentColor);
+                    p.payment(anotherPlayer, Marrakech.getPaymentAmount(gameState));
+                }
+                // place rug
+            }
+        }
+    }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {

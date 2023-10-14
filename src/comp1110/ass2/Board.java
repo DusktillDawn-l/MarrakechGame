@@ -44,6 +44,10 @@ public class Board {
         board[Character.getNumericValue(rug.charAt(5))][Character.getNumericValue(rug.charAt(6))] = abbrRug;
     }
 
+    public char getColor(int i, int j) {
+        return board[i][j].charAt(0);
+    }
+
     @Override
     public String toString() {
         StringBuilder boardString= new StringBuilder("B");

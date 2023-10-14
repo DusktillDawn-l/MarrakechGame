@@ -14,4 +14,16 @@ public class Helper {
             default -> throw new IllegalArgumentException("Invalid character: " + character);
         };
     }
+
+    // Convert color char to color string
+    public static String charToColorStr(char character) {
+        return switch (character) {
+            case 'c' -> "Cyan";
+            case 'y' -> "Yellow";
+            case 'r' -> "Red";
+            case 'p' -> "Purple";
+            default -> throw new IllegalArgumentException("Invalid character: " + character);
+        };
+    }
+
 }
