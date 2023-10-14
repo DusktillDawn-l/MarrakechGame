@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -39,6 +40,8 @@ public class Viewer extends Application {
     private final Group root = new Group();
     private final Group controls = new Group();
     private TextField boardTextField;
+
+    private Boolean movePhase = false;
 
 
     /**
@@ -246,6 +249,20 @@ public class Viewer extends Application {
         vbox.setLayoutY((VIEWER_HEIGHT - vbox.getPrefHeight()) / 2);
     }
 
+    public void move(boolean movePhase){
+        if (movePhase){
+            root.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.A) {
+                    Marrakech.rotateAssam(Marrakech.assam.toString(),90);
+                    System.out.println(Marrakech.assam.getDirection());
+                }
+                if (event.getCode() == KeyCode.D) {
+                    Marrakech.rotateAssam(Marrakech.assam.toString(),270);
+                    System.out.println(Marrakech.assam.getDirection());
+                }
+            });
+        }
+    }
 
 
     @Override

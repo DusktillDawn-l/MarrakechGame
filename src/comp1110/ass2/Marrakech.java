@@ -8,10 +8,10 @@ import java.util.Random;
 import static comp1110.ass2.Helper.*;
 
 public class Marrakech {
-    private static Board board;
-    private static Assam assam;
-    private static ArrayList<Player> playerList = new ArrayList<>();
-    private static ArrayList<Rug> rugList = new ArrayList<>();
+    public static Board board;
+    public static Assam assam;
+    public static ArrayList<Player> playerList = new ArrayList<>();
+    public static ArrayList<Rug> rugList = new ArrayList<>();
 
     public Marrakech() {
         board = new Board();
@@ -166,7 +166,7 @@ public class Marrakech {
      */
     public static String rotateAssam(String currentAssam, int rotation) {
         // The only valid degrees are 90 and 270
-        Assam assam = new Assam(currentAssam);
+//        Assam assam = new Assam(currentAssam);
         assam.changeDirection(rotation);
         return assam.toString();
     }
@@ -411,28 +411,28 @@ public class Marrakech {
      */
     public static String makePlacement(String currentGame, String rug) {
         if (isPlacementValid(currentGame, rug) && isRugValid(currentGame, rug)){
-            Marrakech game = new Marrakech();
-            game.createGame(currentGame);
-            game.board.placeRug(rug);
+//            Marrakech game = new Marrakech();
+//            game.createGame(currentGame);
+            board.placeRug(rug);
             Rug r = new Rug(rug);
-            for (Player p : game.playerList){
+            for (Player p : playerList){
                 if (r.getColor() == p.getColor()){
                     p.placeRug();
                 }
             }
-            return game.getGameString();
+            return getGameString();
         } else {
             return currentGame;
         }
     }
 
-    public String getGameString() {
+    public static String getGameString() {
         StringBuilder gameStringBuilder = new StringBuilder();
-        for (Player player : this.playerList) {
+        for (Player player : playerList) {
             gameStringBuilder.append(player.toString());
         }
-        gameStringBuilder.append(this.assam.toString());
-        gameStringBuilder.append(this.board.toString());
+        gameStringBuilder.append(assam.toString());
+        gameStringBuilder.append(board.toString());
         return gameStringBuilder.toString();
     }
 
