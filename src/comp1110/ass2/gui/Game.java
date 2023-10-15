@@ -33,7 +33,8 @@ public class Game extends Application {
     private static final int WINDOW_HEIGHT = 700;
     private int numberOfRotationsInOneRound =0;
     private int dice = 0;
-    private AtomicInteger round = new AtomicInteger(0);
+    private final AtomicInteger round = new AtomicInteger(0);
+    private char currentPlayer = 'n';
     String initialGameState = "";
 
     void displayState(String state) {
@@ -131,6 +132,7 @@ public class Game extends Application {
             round.getAndIncrement();
             System.out.println("目前为第"+round+"轮次");
             Player p = Marrakech.playerList.get(index);
+            currentPlayer = Marrakech.playerList.get((index + 1) % activePlayerNo).getColor().getColor();
             System.out.println("当前走完的玩家为"+p);
             System.out.println("当前踩到的棋盘颜色为"+boardColor);
             if (boardColor != p.getColor().getColor() && boardColor != 'n') {
@@ -168,7 +170,24 @@ public class Game extends Application {
             // add player color
             Text p = new Text();
             p.setText("Player " + playerStr.charAt(iInc + 1));
-            p.setFill(charToColor(playerStr.charAt(iInc + 1)));
+            // Set the color of the text to gray if the player has quit
+            if (playerStr.charAt(iInc + 7) == 'o'){
+                p.setFill(Color.GRAY);
+            } else {
+                p.setFill(charToColor(playerStr.charAt(iInc + 1)));
+                // Add a triangle pointing to the current player
+                if (currentPlayer == playerStr.charAt(iInc + 1) ||
+                        (currentPlayer == 'n' && i == 0)){
+                    // create a triangle pointing to the current player using i
+                    Polygon triangle = new Polygon();
+                    triangle.getPoints().addAll(
+                            10.0, 30.0 + i * playerGap,
+                            10.0, 50.0 + i * playerGap,
+                            50.0, 40.0 + i * playerGap
+                    );
+                    pane.getChildren().add(triangle);
+                }
+            }
             p.setStroke(Color.BLACK);
             p.setStyle("-fx-font: 24 arial;");
             p.setStrokeWidth(0.8);
@@ -247,9 +266,18 @@ public class Game extends Application {
         diceNumber.setY(660);
         diceNumber.setFill(Color.BLACK);
         diceNumber.setFont(Font.font(36));
-        diceNumber.setText("→ " + String.valueOf(dice));
+        diceNumber.setText("→ " + dice);
         pane.getChildren().add(diceNumber);
         pane.getChildren().addAll(assamArrow);
+
+        // Create a Text component for round number
+        Text roundNumber = new Text();
+        roundNumber.setX(1000);
+        roundNumber.setY(50);
+        roundNumber.setFill(Color.BLACK);
+        roundNumber.setFont(Font.font(30));
+        roundNumber.setText("Round " + round.get());
+        pane.getChildren().add(roundNumber);
     }
 
     // Create players and return the game string
