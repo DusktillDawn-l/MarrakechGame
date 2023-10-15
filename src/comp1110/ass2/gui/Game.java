@@ -14,11 +14,11 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static comp1110.ass2.Helper.charToColor;
 import static comp1110.ass2.Helper.charToColorStr;
@@ -30,13 +30,13 @@ public class Game extends Application {
     private static final int WINDOW_WIDTH = 1200;
     private static final int WINDOW_HEIGHT = 700;
     private int numberOfRotationsInOneRound =0;
+    private AtomicInteger round = new AtomicInteger(0);
     String initialGameState = "";
 
     void displayState(String state) {
         int boardSize = 80;
         double gapSize = 0;
         Pane pane = new Pane();
-
         ArrayList<Rectangle> rectangles = new ArrayList<>();
 
         for (int row = 0; row < 7; row++) {
@@ -93,6 +93,8 @@ public class Game extends Application {
 
         int diceSize = 60;
         Rectangle diceSquare = new Rectangle(WINDOW_WIDTH - diceSize, WINDOW_HEIGHT - diceSize, diceSize, diceSize);
+        diceSquare.setX(1000);
+        diceSquare.setY(600);
         diceSquare.setFill(Color.WHITE);
         diceSquare.setStroke(Color.BLACK);
 
@@ -108,13 +110,31 @@ public class Game extends Application {
             // Set the default value of the die to 1
             int randomDiceValue = Marrakech.rollDie();
             diceNumber.setText(String.valueOf(randomDiceValue));
+            System.out.println("Dice number should now be: " + diceNumber.getText()); // Debug statement 3
+            System.out.println(Marrakech.assam);
             Marrakech.assam.move(randomDiceValue);
+            System.out.println(Marrakech.assam);
+
+            Marrakech.updateBoard(state);
+            char boardColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
+            int index = round.get() % Marrakech.playerList.size();
+            System.out.println(Marrakech.playerList);
+            round.getAndIncrement();
+            System.out.println(round);
+            Player p = Marrakech.playerList.get(index);
+            System.out.println(p);
+            System.out.println(boardColor);
+            if (boardColor != p.getColor().getColor() && boardColor != 'n') {
+                Player anotherPlayer = Marrakech.getPlayerFromColor(boardColor);
+                p.payment(anotherPlayer, Marrakech.getPaymentAmount(state));
+                System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + Marrakech.getPaymentAmount(state) + " dirhams");
+            }
             displayState(Marrakech.getGameString());
         });
 
         diceNumber.setFill(Color.BLACK);
         diceNumber.setFont(Font.font(36));
-        pane.getChildren().addAll(diceSquare, diceNumber);
+        pane.getChildren().addAll(diceSquare);
 
         //切换到displayState的界面
         root.getChildren().clear();
@@ -129,7 +149,7 @@ public class Game extends Application {
             int playerGap = 130;
             // add player color
             Text p = new Text();
-            p.setText("Player" + (i + 1));
+            p.setText("Player " + playerStr.charAt(iInc + 1));
             p.setFill(charToColor(playerStr.charAt(iInc + 1)));
             p.setStroke(Color.BLACK);
             p.setStyle("-fx-font: 24 arial;");
@@ -175,14 +195,14 @@ public class Game extends Application {
         int assamRow = Character.getNumericValue(assamPositionRow);
         int assamCol = Character.getNumericValue(assamPositionCol);
 
-        double assamX = 320 + assamCol * (boardSize + gapSize) + (double) boardSize / 2;
-        double assamY = 70 + assamRow * (boardSize + gapSize) + (double) boardSize / 2;
+        double assamX = 320 + assamRow * (boardSize + gapSize) + (double) boardSize / 2;
+        double assamY = 70 + assamCol * (boardSize + gapSize) + (double) boardSize / 2;
 
         // Create an arrow pointing upward as default
         Polygon assamArrow = new Polygon();
         assamArrow.getPoints().addAll(
-                assamX, assamY - boardSize / 5,
-                assamX - boardSize / 5, assamY + boardSize / 5,
+                assamX, assamY - boardSize / 5,  // Tip of the arrow
+                assamX - boardSize / 5, assamY + boardSize / 5,  // Bottom left corner
                 assamX + boardSize / 5, assamY + boardSize / 5
         );
         assamArrow.setFill(Color.BLACK);
@@ -240,19 +260,19 @@ public class Game extends Application {
                     Marrakech.createGame("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
 //                    displayState("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
-                    gameStart(initialGameState);
+                    displayState(initialGameState);
                     break;
                 case 3:
                     Marrakech.createGame("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
 //                    displayState("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
-                    gameStart(initialGameState);
+                    displayState(initialGameState);
                     break;
                 case 4:
                     Marrakech.createGame("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
 //                    displayState("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
-                    gameStart(initialGameState);
+                    displayState(initialGameState);
                     break;
             }
 
@@ -291,6 +311,7 @@ public class Game extends Application {
 
     public void gameStart(String gameState){
         createPlayerSelectionInterface();
+
         while (!checkWinner(gameState)){
             for (Player p : Marrakech.playerList){
                 displayState(gameState);
@@ -306,12 +327,17 @@ public class Game extends Application {
                 // place rug
             }
         }
+
+
     }
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        createPlayerSelectionInterface();
+        // createPlayerSelectionInterface();
+        String testStr = "Pc03407iPy06907iPp01207iPr00407iA14NBn00n00r03p05y06r11p08n00n00n00p05c13r11p09r15r15p15y17r13y10y10n00n00y03y17r13p11p11n00c05p04y09y15y15y12n00p16n00y09c14c14y12n00p16n00n00p12p12n00";
+        Marrakech.createGame(testStr);
+        displayState(testStr);
         // Set up the scene and stage
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(scene);

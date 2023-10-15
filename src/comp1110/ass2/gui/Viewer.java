@@ -128,14 +128,15 @@ public class Viewer extends Application {
         int assamRow = Character.getNumericValue(assamPositionRow);
         int assamCol = Character.getNumericValue(assamPositionCol);
 
-        double assamX = 320 + assamCol * (boardSize + gapSize) + (double) boardSize / 2;
-        double assamY = 70 + assamRow * (boardSize + gapSize) + (double) boardSize / 2;
-
+        double assamX = 320 + assamRow * (boardSize + gapSize) + (double) boardSize / 2;
+        double assamY = 70 + assamCol * (boardSize + gapSize) + (double) boardSize / 2;
+        System.out.println(assamX);
+        System.out.println(assamY);
         // Create an arrow pointing upward as default
         Polygon assamArrow = new Polygon();
         assamArrow.getPoints().addAll(
-                assamX, assamY - boardSize / 5,
-                assamX - boardSize / 5, assamY + boardSize / 5,
+                assamX, assamY - boardSize / 5,  // Tip of the arrow
+                assamX - boardSize / 5, assamY + boardSize / 5,  // Bottom left corner
                 assamX + boardSize / 5, assamY + boardSize / 5
         );
         assamArrow.setFill(Color.BLACK);
