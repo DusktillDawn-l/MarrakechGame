@@ -4,11 +4,14 @@ import comp1110.ass2.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
@@ -16,6 +19,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javax.swing.*;
+import javax.swing.text.Element;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,15 +41,25 @@ public class Game extends Application {
     String initialGameState = "";
 
     void displayState(String state) {
-        int boardSize = 80;
+        int boardSize = 70;
         double gapSize = 0;
         Pane pane = new Pane();
+        StackPane stackPane = new StackPane();
         ArrayList<Rectangle> rectangles = new ArrayList<>();
+
+        Image boardImage = new Image("file:assets/Board Image.png");
+        ImageView boardView = new ImageView(boardImage);
+        boardView.setX(200);
+        boardView.setY(20);
+        boardView.setFitHeight(680);
+        boardView.setFitWidth(680);
+        pane.getChildren().add(boardView);
+
 
         for (int row = 0; row < 7; row++) {
             for (int col = 0; col < 7; col++) {
-                double x = 320 + col * (boardSize + gapSize);
-                double y = 70 + row * (boardSize + gapSize);
+                double x = 300 + col * (boardSize + gapSize);
+                double y = 120 + row * (boardSize + gapSize);
 
                 Rectangle square = new Rectangle((int) x, (int) y, boardSize, boardSize);
                 square.setFill(Color.ORANGE);
@@ -51,6 +68,8 @@ public class Game extends Application {
                 pane.getChildren().add(square);
             }
         }
+
+
 
         // 创建左转箭头
         Polygon leftArrow = new Polygon();
@@ -195,8 +214,8 @@ public class Game extends Application {
         int assamRow = Character.getNumericValue(assamPositionRow);
         int assamCol = Character.getNumericValue(assamPositionCol);
 
-        double assamX = 320 + assamRow * (boardSize + gapSize) + (double) boardSize / 2;
-        double assamY = 70 + assamCol * (boardSize + gapSize) + (double) boardSize / 2;
+        double assamX = 300 + assamRow * (boardSize + gapSize) + (double) boardSize / 2;
+        double assamY = 120 + assamCol * (boardSize + gapSize) + (double) boardSize / 2;
 
         // Create an arrow pointing upward as default
         Polygon assamArrow = new Polygon();
