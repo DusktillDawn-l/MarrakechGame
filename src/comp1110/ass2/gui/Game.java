@@ -118,16 +118,17 @@ public class Game extends Application {
             Marrakech.updateBoard(state);
             char boardColor = Marrakech.board.getColor(Marrakech.assam.getY(), Marrakech.assam.getX());
             int index = round.get() % Marrakech.playerList.size();
-            System.out.println(Marrakech.playerList);
+            System.out.println("playerList为"+Marrakech.playerList);
             round.getAndIncrement();
-            System.out.println(round);
+            System.out.println("目前为第"+round+"轮次");
             Player p = Marrakech.playerList.get(index);
-            System.out.println(p);
-            System.out.println(boardColor);
+            System.out.println("当前走完的玩家为"+p);
+            System.out.println("当前踩到的棋盘颜色为"+boardColor);
             if (boardColor != p.getColor().getColor() && boardColor != 'n') {
                 System.out.println(Marrakech.getGameString());
                 Player anotherPlayer = Marrakech.getPlayerFromColor(boardColor);
-                p.payment(anotherPlayer, Marrakech.getPaymentAmount(Marrakech.getGameString()));
+                int amount = Marrakech.getPaymentAmount(Marrakech.getGameString());
+                p.payment(anotherPlayer, amount);
                 System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + Marrakech.getPaymentAmount(Marrakech.getGameString()) + " dirhams");
             }
             displayState(Marrakech.getGameString());

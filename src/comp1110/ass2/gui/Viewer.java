@@ -184,10 +184,6 @@ public class Viewer extends Application {
         controls.getChildren().add(hb);
     }
 
-
-
-
-    //旧的代码
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Marrakech Viewer");

@@ -261,8 +261,10 @@ public class Marrakech {
         assam = gameString.substring(assamIndex, assamIndex + 4);
         board = gameString.substring(boardIndex + 1);
 
-        row = Integer.parseInt(String.valueOf(assam.charAt(1)));
-        column = Integer.parseInt(String.valueOf(assam.charAt(2)));
+        row = Integer.parseInt(String.valueOf(assam.charAt(2)));
+//        System.out.println("函数内的row为"+row);
+        column = Integer.parseInt(String.valueOf(assam.charAt(1)));
+//        System.out.println("函数内的column为"+column);
 
         // Convert string to 2d array
         int index = 0;
@@ -277,6 +279,7 @@ public class Marrakech {
             return 0;
         } else {
             char color = boardArray[row][column].charAt(0);
+//            System.out.println("函数内认为的color为"+color);
             boolean[][] visited = new boolean[7][7]; // To avoid infinite loop
             amount = traverse(boardArray, row, column, color, 0, visited);
         }
@@ -294,13 +297,13 @@ public class Marrakech {
      * @return the amount we need to pay
      */
     public static int traverse(String[][] boardArray, int row, int column, char color, int amount, boolean[][] visited) {
+//        System.out.println("我踩到了"+color+"上");
         if (row < 0 || row >= 7 || column < 0 || column >= 7 || visited[row][column] || boardArray[row][column].charAt(0) != color) {
             return amount;
         }
-
         visited[row][column] = true;
         amount++;
-
+//        System.out.println("因为"+row+"行"+column+"列"+"amount+1");
         amount = traverse(boardArray, row + 1, column, color, amount, visited);
         amount = traverse(boardArray, row - 1, column, color, amount, visited);
         amount = traverse(boardArray, row, column + 1, color, amount, visited);
