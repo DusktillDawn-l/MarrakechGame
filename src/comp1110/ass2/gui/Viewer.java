@@ -55,8 +55,8 @@ public class Viewer extends Application {
 
         ArrayList<Rectangle> rectangles = new ArrayList<>();
 
-        for (int col = 0; col < 7; col++) {
-            for(int row = 0; row < 7; row++) {
+        for (int row = 0; row < 7; row++) {
+            for (int col = 0; col < 7; col++) {
                 double x = 320 + col * (boardSize + gapSize);
                 double y = 70 + row * (boardSize + gapSize);
 
@@ -184,6 +184,10 @@ public class Viewer extends Application {
         controls.getChildren().add(hb);
     }
 
+
+
+
+    //旧的代码
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Marrakech Viewer");
