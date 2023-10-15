@@ -30,6 +30,7 @@ public class Game extends Application {
     private static final int WINDOW_WIDTH = 1200;
     private static final int WINDOW_HEIGHT = 700;
     private int numberOfRotationsInOneRound =0;
+    private int dice = 0;
     private AtomicInteger round = new AtomicInteger(0);
     String initialGameState = "";
 
@@ -90,27 +91,25 @@ public class Game extends Application {
 
         pane.getChildren().addAll(leftArrow, rightArrow);
 
+        // Create a Rectangle component to represent the dice
+        Rectangle diceSquare = new Rectangle(1007, 620, 85, 55);
 
-        int diceSize = 60;
-        Rectangle diceSquare = new Rectangle(WINDOW_WIDTH - diceSize, WINDOW_HEIGHT - diceSize, diceSize, diceSize);
-        diceSquare.setX(1000);
-        diceSquare.setY(600);
-        diceSquare.setFill(Color.WHITE);
-        diceSquare.setStroke(Color.BLACK);
+        diceSquare.setFill(Color.RED);
+        Text roll = new Text("ROLL");
+        roll.setX(1012);
+        roll.setY(660);
+        roll.setFont(Font.font(30));
 
         // Create a Text component to display the number of the side of the dice
-        Text diceNumber = new Text();
-        diceNumber.setX(1200 - diceSize + 20);
-        diceNumber.setY(700 - diceSize + 40);
-        int initialDiceValue = 1;
-        diceNumber.setText(String.valueOf(initialDiceValue));
 
 
-        diceSquare.setOnMouseClicked(e -> {
+        roll.setOnMouseClicked(e -> {
             // Set the default value of the die to 1
+
+
             int randomDiceValue = Marrakech.rollDie();
-            diceNumber.setText(String.valueOf(randomDiceValue));
-            System.out.println("Dice number should now be: " + diceNumber.getText()); // Debug statement 3
+            dice = randomDiceValue;
+            System.out.println("Dice number should now be: " + dice);
             System.out.println(Marrakech.assam);
             Marrakech.assam.move(randomDiceValue);
             System.out.println(Marrakech.assam);
@@ -134,9 +133,8 @@ public class Game extends Application {
             displayState(Marrakech.getGameString());
         });
 
-        diceNumber.setFill(Color.BLACK);
-        diceNumber.setFont(Font.font(36));
-        pane.getChildren().addAll(diceSquare);
+        // Paint diceSquare first
+        pane.getChildren().addAll(diceSquare, roll);
 
         //切换到displayState的界面
         root.getChildren().clear();
@@ -225,6 +223,14 @@ public class Game extends Application {
                 throw new RuntimeException("Invalid direction");
         }
 
+        // Create a Text component to display the number of the side of the dice
+        Text diceNumber = new Text();
+        diceNumber.setX(1100);
+        diceNumber.setY(660);
+        diceNumber.setFill(Color.BLACK);
+        diceNumber.setFont(Font.font(36));
+        diceNumber.setText("→ " + String.valueOf(dice));
+        pane.getChildren().add(diceNumber);
         pane.getChildren().addAll(assamArrow);
     }
 
