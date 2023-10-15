@@ -55,8 +55,8 @@ public class Viewer extends Application {
 
         ArrayList<Rectangle> rectangles = new ArrayList<>();
 
-        for (int row = 0; row < 7; row++) {
-            for (int col = 0; col < 7; col++) {
+        for (int col = 0; col < 7; col++) {
+            for(int row = 0; row < 7; row++) {
                 double x = 320 + col * (boardSize + gapSize);
                 double y = 70 + row * (boardSize + gapSize);
 

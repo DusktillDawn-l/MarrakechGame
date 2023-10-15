@@ -40,8 +40,8 @@ public class Game extends Application {
         Pane pane = new Pane();
         ArrayList<Rectangle> rectangles = new ArrayList<>();
 
-        for (int row = 0; row < 7; row++) {
-            for (int col = 0; col < 7; col++) {
+        for (int col = 0; col < 7; col++) {
+            for(int row = 0; row < 7; row++) {
                 double x = 320 + col * (boardSize + gapSize);
                 double y = 70 + row * (boardSize + gapSize);
 
@@ -116,7 +116,7 @@ public class Game extends Application {
 
             // Calculate payment
             Marrakech.updateBoard(state);
-            char boardColor = Marrakech.board.getColor(Marrakech.assam.getY(), Marrakech.assam.getX());
+            char boardColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
             int index = round.get() % Marrakech.playerList.size();
             System.out.println("playerList为"+Marrakech.playerList);
             round.getAndIncrement();
