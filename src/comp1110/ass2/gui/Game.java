@@ -5,9 +5,11 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
@@ -35,6 +37,7 @@ public class Game extends Application {
     private int dice = 0;
     private final AtomicInteger round = new AtomicInteger(0);
     private char currentPlayer = 'n';
+    private int AIPlayerNumber = 0;
     String initialGameState = "";
 
     void displayState(String state) {
@@ -287,7 +290,7 @@ public class Game extends Application {
         p.setStyle("-fx-font: 50 arial;");
         p.setX(400);
         p.setY(350);
-        Label label = new Label("Select Number of Player");
+        Label label = new Label("Select Number\nof Player");
         label.setMaxWidth(Double.MAX_VALUE);
         label.setAlignment(Pos.CENTER);
         label.setStyle("-fx-font-size: 24;");  // Adjust as necessary
@@ -300,6 +303,18 @@ public class Game extends Application {
         choiceBox.setMaxSize(200, 50);
         choiceBox.setMinSize(200, 50);
 
+        Label label2 = new Label("Select Number\nof AI player");
+        label2.setMaxWidth(Double.MAX_VALUE);
+        label2.setAlignment(Pos.CENTER);
+        label2.setStyle("-fx-font-size: 24;");  // Adjust as necessary
+        // Create a choice box with ai numbers 0 to 3
+        ChoiceBox<Integer> choiceBox2 = new ChoiceBox<>();
+        choiceBox2.getItems().addAll(0, 1, 2, 3);
+        choiceBox2.setStyle("-fx-font-size: 24;");
+        choiceBox2.setValue(0);  // Set default value
+        choiceBox2.setMaxSize(200, 50);
+        choiceBox2.setMinSize(200, 50);
+
         // Create a confirm button
         Button confirmButton = new Button("Confirm");
         confirmButton.setMaxSize(200, 50);
@@ -309,22 +324,31 @@ public class Game extends Application {
         //在这里进行了游戏玩家数与棋盘的初始化
         confirmButton.setOnAction(e -> {
             int selectedValue = choiceBox.getValue();
+            int AIPlayerNumber = choiceBox2.getValue();
+            if (selectedValue <= AIPlayerNumber){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+
+                // Set the properties of the alert
+                alert.setTitle("Configuration Error");
+                alert.setHeaderText("There must be at least one human player");
+                alert.setContentText("Please select again");
+                // Show the alert and wait for user response
+                alert.showAndWait();
+                return;
+            }
             switch (selectedValue){
                 case 2:
                     Marrakech.createGame("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-//                    displayState("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
                     displayState(initialGameState);
                     break;
                 case 3:
                     Marrakech.createGame("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-//                    displayState("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
                     displayState(initialGameState);
                     break;
                 case 4:
                     Marrakech.createGame("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-//                    displayState("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
                     displayState(initialGameState);
                     break;
@@ -332,21 +356,29 @@ public class Game extends Application {
 
         });
 
-        // Create a VBox to hold the label, choice box and button
+// Create a VBox to hold the label, choice box, and button
+        VBox whole = new VBox(20);  // 20 is the spacing between elements
         VBox vbox = new VBox(20);  // 20 is the spacing between elements
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setFillWidth(true);
-        vbox.getChildren().addAll(p, label, choiceBox, confirmButton);
+        vbox.getChildren().addAll(label, choiceBox);
+        VBox vbox1 = new VBox(20);  // 20 is the spacing between elements
+        vbox1.getChildren().addAll(label2, choiceBox2);
 
-        // Set a preferred size for the VBox (optional, but helps with centering)
-        vbox.setPrefSize(300, 300);  // Example dimensions, adjust as needed
+// Create an HBox to hold the choice boxes in parallel
+        HBox hbox = new HBox(20);  // 20 is the spacing between the choice boxes
+        hbox.getChildren().addAll(vbox, vbox1);
+
+// Add elements to the VBox, including the HBox
+        whole.setAlignment(Pos.CENTER);
+        whole.setFillWidth(true);
+        whole.setPrefSize(300, 300);
+        whole.getChildren().addAll(p, hbox, confirmButton);
 
         // Assuming root is of type Pane or AnchorPane
-        root.getChildren().add(vbox);
+        root.getChildren().add(whole);
 
         // Bind layoutX and layoutY properties of the VBox to center it in root
-        vbox.setLayoutX((WINDOW_WIDTH - vbox.getPrefWidth()) / 2);
-        vbox.setLayoutY((WINDOW_HEIGHT - vbox.getPrefHeight()) / 2);
+        whole.setLayoutX((WINDOW_WIDTH - whole.getPrefWidth()) / 2 - 50);
+        whole.setLayoutY((WINDOW_HEIGHT - whole.getPrefHeight()) / 2 - 25);
     }
 
     // check game over and display the winner
@@ -388,10 +420,10 @@ public class Game extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // createPlayerSelectionInterface();
-        String testStr = "Pc03407iPy06907iPp01207iPr00407iA14NBn00n00r03p05y06r11p08n00n00n00p05c13r11p09r15r15p15y17r13y10y10n00n00y03y17r13p11p11n00c05p04y09y15y15y12n00p16n00y09c14c14y12n00p16n00n00p12p12n00";
-        Marrakech.createGame(testStr);
-        displayState(testStr);
+        createPlayerSelectionInterface();
+        //String testStr = "Pc03407iPy06907iPp01207iPr00407iA14NBn00n00r03p05y06r11p08n00n00n00p05c13r11p09r15r15p15y17r13y10y10n00n00y03y17r13p11p11n00c05p04y09y15y15y12n00p16n00y09c14c14y12n00p16n00n00p12p12n00";
+        //Marrakech.createGame(testStr);
+        //displayState(testStr);
         // Set up the scene and stage
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(scene);
