@@ -69,28 +69,24 @@ public class Game extends Application {
             }
         }
 
-
-
-        // 创建左转箭头
+        // Create arrows to rotate Assam
         Polygon leftArrow = new Polygon();
         leftArrow.getPoints().addAll(
-                1000.0, 300.0,  // 左侧顶点
-                1050.0, 350.0,  // 下方顶点
-                1050.0, 250.0   // 上方顶点
+                1000.0, 300.0,
+                1050.0, 350.0,
+                1050.0, 250.0
         );
         leftArrow.setFill(Color.BLACK);
 
-        // 创建右转箭头
         Polygon rightArrow = new Polygon();
         rightArrow.getPoints().addAll(
-                1150.0, 300.0,  // 右侧顶点
-                1100.0, 350.0,  // 下方顶点
-                1100.0, 250.0   // 上方顶点
+                1150.0, 300.0,
+                1100.0, 350.0,
+                1100.0, 250.0
         );
         rightArrow.setFill(Color.BLACK);
 
         leftArrow.setOnMouseClicked(e -> {
-                // 这里执行左转操作
             if (numberOfRotationsInOneRound >=0){
                 Marrakech.rotateAssam(Marrakech.assam.toString(), 270);
                 numberOfRotationsInOneRound--;
@@ -99,7 +95,6 @@ public class Game extends Application {
         });
 
         rightArrow.setOnMouseClicked(e -> {
-            // 这里执行右转操作
             if (numberOfRotationsInOneRound <=0){
                 Marrakech.rotateAssam(Marrakech.assam.toString(), 90);
                 numberOfRotationsInOneRound++;
