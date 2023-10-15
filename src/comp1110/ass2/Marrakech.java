@@ -47,6 +47,17 @@ public class Marrakech {
         }
         throw new RuntimeException("No such player");
     }
+
+    // get no of players in game
+    public static int getActivePlayerNo() {
+        int noOfPlayers = 0;
+        for (Player p : playerList) {
+            if (p.getInGame() == 'i') {
+                noOfPlayers++;
+            }
+        }
+        return noOfPlayers;
+    }
     /**
      * Determine whether a rug String is valid.
      * For this method, you need to determine whether the rug String is valid, but do not need to determine whether it

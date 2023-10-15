@@ -120,15 +120,13 @@ public class Game extends Application {
 
             int randomDiceValue = Marrakech.rollDie();
             dice = randomDiceValue;
-            System.out.println("Dice number should now be: " + dice);
-            System.out.println(Marrakech.assam);
             Marrakech.assam.move(randomDiceValue);
-            System.out.println(Marrakech.assam);
 
             // Calculate payment
             Marrakech.updateBoard(state);
             char boardColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
-            int index = round.get() % Marrakech.playerList.size();
+            int activePlayerNo = Marrakech.getActivePlayerNo();
+            int index = round.get() % activePlayerNo;
             System.out.println("playerList为"+Marrakech.playerList);
             round.getAndIncrement();
             System.out.println("目前为第"+round+"轮次");
@@ -139,9 +137,16 @@ public class Game extends Application {
                 System.out.println(Marrakech.getGameString());
                 Player anotherPlayer = Marrakech.getPlayerFromColor(boardColor);
                 int amount = Marrakech.getPaymentAmount(Marrakech.getGameString());
+                if (amount > p.getDirhams()) {
+                    amount = p.getDirhams();
+                    p.quitGame();
+                    System.out.println("Player " + p.getColor() + " quit the game");
+                }
                 p.payment(anotherPlayer, amount);
-                System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + Marrakech.getPaymentAmount(Marrakech.getGameString()) + " dirhams");
+                System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + amount + " dirhams");
             }
+
+
             numberOfRotationsInOneRound = 0;
             displayState(Marrakech.getGameString());
         });
