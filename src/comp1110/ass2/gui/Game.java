@@ -131,6 +131,7 @@ public class Game extends Application {
                 p.payment(anotherPlayer, amount);
                 System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + Marrakech.getPaymentAmount(Marrakech.getGameString()) + " dirhams");
             }
+            numberOfRotationsInOneRound = 0;
             displayState(Marrakech.getGameString());
         });
 
