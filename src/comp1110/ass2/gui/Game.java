@@ -115,8 +115,9 @@ public class Game extends Application {
             Marrakech.assam.move(randomDiceValue);
             System.out.println(Marrakech.assam);
 
+            // Calculate payment
             Marrakech.updateBoard(state);
-            char boardColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
+            char boardColor = Marrakech.board.getColor(Marrakech.assam.getY(), Marrakech.assam.getX());
             int index = round.get() % Marrakech.playerList.size();
             System.out.println(Marrakech.playerList);
             round.getAndIncrement();
@@ -125,9 +126,10 @@ public class Game extends Application {
             System.out.println(p);
             System.out.println(boardColor);
             if (boardColor != p.getColor().getColor() && boardColor != 'n') {
+                System.out.println(Marrakech.getGameString());
                 Player anotherPlayer = Marrakech.getPlayerFromColor(boardColor);
-                p.payment(anotherPlayer, Marrakech.getPaymentAmount(state));
-                System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + Marrakech.getPaymentAmount(state) + " dirhams");
+                p.payment(anotherPlayer, Marrakech.getPaymentAmount(Marrakech.getGameString()));
+                System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + Marrakech.getPaymentAmount(Marrakech.getGameString()) + " dirhams");
             }
             displayState(Marrakech.getGameString());
         });
