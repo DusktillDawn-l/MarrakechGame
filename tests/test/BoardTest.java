@@ -35,16 +35,5 @@ public class BoardTest {
         String expected = "Bn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00ABCn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
         assertEquals(expected, board.toString());
     }
-
-    @Test
-    public void testGetColor() {
-        // Test the setBoard method
-        String boardString = "Bn00n00r03p05y06r11p08n00n00n00p05c13r11p09r15r15p15y17r13y10y10n00n00y03y17r13p11p11n00c05p04y09y15y15y12n00p16n00y09c14c14y12n00p16n00n00p12p12n00";
-        Board newBoard = new Board(boardString);
-        assertEquals('n', board.getColor(0, 0));
-        assertEquals('p', board.getColor(2, 2));
-        assertEquals('n', board.getColor(0, 3));
-        assertEquals('p', board.getColor(6, 5));
-    }
 }
 

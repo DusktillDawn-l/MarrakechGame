@@ -4,11 +4,14 @@ import comp1110.ass2.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
@@ -16,6 +19,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javax.swing.*;
+import javax.swing.text.Element;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,20 +37,29 @@ public class Game extends Application {
     private static final int WINDOW_WIDTH = 1200;
     private static final int WINDOW_HEIGHT = 700;
     private int numberOfRotationsInOneRound =0;
-    private int dice = 0;
     private AtomicInteger round = new AtomicInteger(0);
     String initialGameState = "";
 
     void displayState(String state) {
-        int boardSize = 80;
+        int boardSize = 70;
         double gapSize = 0;
         Pane pane = new Pane();
+        StackPane stackPane = new StackPane();
         ArrayList<Rectangle> rectangles = new ArrayList<>();
 
-        for (int col = 0; col < 7; col++) {
-            for(int row = 0; row < 7; row++) {
-                double x = 320 + col * (boardSize + gapSize);
-                double y = 70 + row * (boardSize + gapSize);
+        Image boardImage = new Image("file:assets/Board Image.png");
+        ImageView boardView = new ImageView(boardImage);
+        boardView.setX(200);
+        boardView.setY(20);
+        boardView.setFitHeight(680);
+        boardView.setFitWidth(680);
+        pane.getChildren().add(boardView);
+
+
+        for (int row = 0; row < 7; row++) {
+            for (int col = 0; col < 7; col++) {
+                double x = 300 + col * (boardSize + gapSize);
+                double y = 120 + row * (boardSize + gapSize);
 
                 Rectangle square = new Rectangle((int) x, (int) y, boardSize, boardSize);
                 square.setFill(Color.ORANGE);
@@ -88,52 +104,51 @@ public class Game extends Application {
 
         pane.getChildren().addAll(leftArrow, rightArrow);
 
-        // Create a Rectangle component to represent the dice
-        Rectangle diceSquare = new Rectangle(1007, 620, 85, 55);
 
-        diceSquare.setFill(Color.RED);
-        Text roll = new Text("ROLL");
-        roll.setX(1012);
-        roll.setY(660);
-        roll.setFont(Font.font(30));
+        int diceSize = 60;
+        Rectangle diceSquare = new Rectangle(WINDOW_WIDTH - diceSize, WINDOW_HEIGHT - diceSize, diceSize, diceSize);
+        diceSquare.setX(1000);
+        diceSquare.setY(600);
+        diceSquare.setFill(Color.WHITE);
+        diceSquare.setStroke(Color.BLACK);
 
         // Create a Text component to display the number of the side of the dice
+        Text diceNumber = new Text();
+        diceNumber.setX(1200 - diceSize + 20);
+        diceNumber.setY(700 - diceSize + 40);
+        int initialDiceValue = 1;
+        diceNumber.setText(String.valueOf(initialDiceValue));
 
 
-        roll.setOnMouseClicked(e -> {
+        diceSquare.setOnMouseClicked(e -> {
             // Set the default value of the die to 1
-
-
             int randomDiceValue = Marrakech.rollDie();
-            dice = randomDiceValue;
-            System.out.println("Dice number should now be: " + dice);
+            diceNumber.setText(String.valueOf(randomDiceValue));
+            System.out.println("Dice number should now be: " + diceNumber.getText()); // Debug statement 3
             System.out.println(Marrakech.assam);
             Marrakech.assam.move(randomDiceValue);
             System.out.println(Marrakech.assam);
 
-            // Calculate payment
             Marrakech.updateBoard(state);
             char boardColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
             int index = round.get() % Marrakech.playerList.size();
-            System.out.println("playerList为"+Marrakech.playerList);
+            System.out.println(Marrakech.playerList);
             round.getAndIncrement();
-            System.out.println("目前为第"+round+"轮次");
+            System.out.println(round);
             Player p = Marrakech.playerList.get(index);
-            System.out.println("当前走完的玩家为"+p);
-            System.out.println("当前踩到的棋盘颜色为"+boardColor);
+            System.out.println(p);
+            System.out.println(boardColor);
             if (boardColor != p.getColor().getColor() && boardColor != 'n') {
-                System.out.println(Marrakech.getGameString());
                 Player anotherPlayer = Marrakech.getPlayerFromColor(boardColor);
-                int amount = Marrakech.getPaymentAmount(Marrakech.getGameString());
-                p.payment(anotherPlayer, amount);
-                System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + Marrakech.getPaymentAmount(Marrakech.getGameString()) + " dirhams");
+                p.payment(anotherPlayer, Marrakech.getPaymentAmount(state));
+                System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + Marrakech.getPaymentAmount(state) + " dirhams");
             }
-            numberOfRotationsInOneRound = 0;
             displayState(Marrakech.getGameString());
         });
 
-        // Paint diceSquare first
-        pane.getChildren().addAll(diceSquare, roll);
+        diceNumber.setFill(Color.BLACK);
+        diceNumber.setFont(Font.font(36));
+        pane.getChildren().addAll(diceSquare);
 
         //切换到displayState的界面
         root.getChildren().clear();
@@ -194,8 +209,8 @@ public class Game extends Application {
         int assamRow = Character.getNumericValue(assamPositionRow);
         int assamCol = Character.getNumericValue(assamPositionCol);
 
-        double assamX = 320 + assamRow * (boardSize + gapSize) + (double) boardSize / 2;
-        double assamY = 70 + assamCol * (boardSize + gapSize) + (double) boardSize / 2;
+        double assamX = 300 + assamRow * (boardSize + gapSize) + (double) boardSize / 2;
+        double assamY = 120 + assamCol * (boardSize + gapSize) + (double) boardSize / 2;
 
         // Create an arrow pointing upward as default
         Polygon assamArrow = new Polygon();
@@ -222,14 +237,6 @@ public class Game extends Application {
                 throw new RuntimeException("Invalid direction");
         }
 
-        // Create a Text component to display the number of the side of the dice
-        Text diceNumber = new Text();
-        diceNumber.setX(1100);
-        diceNumber.setY(660);
-        diceNumber.setFill(Color.BLACK);
-        diceNumber.setFont(Font.font(36));
-        diceNumber.setText("→ " + String.valueOf(dice));
-        pane.getChildren().add(diceNumber);
         pane.getChildren().addAll(assamArrow);
     }
 
