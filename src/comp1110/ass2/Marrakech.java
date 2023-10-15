@@ -261,9 +261,9 @@ public class Marrakech {
         assam = gameString.substring(assamIndex, assamIndex + 4);
         board = gameString.substring(boardIndex + 1);
 
-        row = Integer.parseInt(String.valueOf(assam.charAt(2)));
+        row = Integer.parseInt(String.valueOf(assam.charAt(1)));
 //        System.out.println("函数内的row为"+row);
-        column = Integer.parseInt(String.valueOf(assam.charAt(1)));
+        column = Integer.parseInt(String.valueOf(assam.charAt(2)));
 //        System.out.println("函数内的column为"+column);
 
         // Convert string to 2d array
