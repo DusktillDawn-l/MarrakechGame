@@ -5,10 +5,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -38,23 +35,47 @@ public class Game extends Application {
     private final AtomicInteger round = new AtomicInteger(0);
     private char currentPlayer = 'n';
     private int AIPlayerNumber = 0;
-    private int currantPhase = 1;//define when to rotate, roll dice or place rug.
-    private int rugSelectedNumber = 0;//define the number of rug being selected during select rug phase.
+    private int gamePhase = 0;//define when to rotate, roll dice or place rug.
+    private int gridSelectedNumber = 0;//define the number of rug being selected during select rug phase.
+    private int lastSelectedBoardRow;
+    private int lastSelectedBoardColumn;
     String initialGameState = "";
 
-
-    public void selectRugToPlace(int row, int column, int currantPhase,char currentPlayer,ArrayList<Rectangle> rectangles){
+    public void selectGridToPlace(int row, int column, int currantPhase, char currentPlayer, ArrayList<Rectangle> rectangles){
         if (currantPhase==1){
-            //选择rug，rugNumber++
-            rugSelectedNumber++;
+            //选择grid, gridNumber++
+            gridSelectedNumber++;
             rectangles.get((row) * 7 + column).setFill(charToColor(currentPlayer));
-//            Marrakech.board[row][column] = "noo";
-            //FIXME 解决创建Rug的问题与currantPhase的问题
+
+            if(gridSelectedNumber ==1){//when select one gird
+                lastSelectedBoardRow = row;
+                lastSelectedBoardColumn = column;
+            }
+            if (gridSelectedNumber ==2){//when select two grid
+                if ((row == lastSelectedBoardRow && Math.abs(column - lastSelectedBoardColumn) == 1)
+                        || (column == lastSelectedBoardColumn && Math.abs(row - lastSelectedBoardRow) == 1)){
+                    //when the two places selected can construct a rug
+                    Rug rug = new Rug(lastSelectedBoardRow, lastSelectedBoardColumn, row, column, comp1110.ass2.Color.valueOf(String.valueOf(currentPlayer)));
+                    if (Marrakech.isRugValid(Marrakech.getGameString(),rug.toString())&&Marrakech.isPlacementValid(Marrakech.getGameString(),rug.toString())){
+                        Marrakech.makePlacement(Marrakech.getGameString(),rug.toString());
+                        Marrakech.rugList.add(rug);
+                        gamePhase = 0;
+                    }
+                    else showAlert("Grid selection invalid\nPlease reselect");
+                }
+                else showAlert("Grid selection invalid\nPlease reselect");
+                gridSelectedNumber =0;
+                displayState(Marrakech.getGameString());
+            }
         }
-        if (rugSelectedNumber==2){
-            //当选择了2个rug时，进行相对应的判断
-            currantPhase=0;
-        }
+        else showAlert("Please rotate assam and roll dice first.");
+    }
+    private void showAlert(String info){
+        // Create a confirmation alert dialog
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, info, ButtonType.YES);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText(null);  // Removes the header
+        alert.showAndWait();
     }
 
     void displayState(String state) {
@@ -62,7 +83,6 @@ public class Game extends Application {
         double gapSize = 0;
         Pane pane = new Pane();
         ArrayList<Rectangle> rectangles = new ArrayList<>();
-
         Image boardImage = new Image("file:assets/Board Image.png");
         ImageView boardView = new ImageView(boardImage);
         boardView.setX(200);
@@ -78,7 +98,7 @@ public class Game extends Application {
                 double y = 120 + row * (boardSize + gapSize);
                 Rectangle square = new Rectangle((int) x, (int) y, boardSize, boardSize);
                 square.setOnMouseClicked(event -> {
-                    selectRugToPlace((int) ((square.getX()-300)/(boardSize + gapSize)), (int) ((square.getY()-120)/(boardSize + gapSize)),currantPhase,currentPlayer,rectangles);
+                    selectGridToPlace((int) ((square.getX()-300)/(boardSize + gapSize)), (int) ((square.getY()-120)/(boardSize + gapSize)), gamePhase,currentPlayer,rectangles);
                 });
                 square.setFill(Color.ORANGE);
                 square.setStroke(Color.BLACK);
@@ -138,40 +158,41 @@ public class Game extends Application {
 
 
         roll.setOnMouseClicked(e -> {
-            // Set the default value of the die to 1
+            if (gamePhase==0){
+                int randomDiceValue = Marrakech.rollDie();
+                dice = randomDiceValue;
+                Marrakech.assam.move(randomDiceValue);
 
-
-            int randomDiceValue = Marrakech.rollDie();
-            dice = randomDiceValue;
-            Marrakech.assam.move(randomDiceValue);
-
-            // Calculate payment
-            Marrakech.updateBoard(state);
-            char boardColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
-            int activePlayerNo = Marrakech.getActivePlayerNo();
-            int index = round.get() % activePlayerNo;
-            System.out.println("playerList为"+Marrakech.playerList);
-            round.getAndIncrement();
-            System.out.println("目前为第"+round+"轮次");
-            Player p = Marrakech.playerList.get(index);
-            currentPlayer = Marrakech.playerList.get((index + 1) % activePlayerNo).getColor().getColor();
-            System.out.println("当前走完的玩家为"+p);
-            System.out.println("当前踩到的棋盘颜色为"+boardColor);
-            if (boardColor != p.getColor().getColor() && boardColor != 'n') {
-                System.out.println(Marrakech.getGameString());
-                Player anotherPlayer = Marrakech.getPlayerFromColor(boardColor);
-                int amount = Marrakech.getPaymentAmount(Marrakech.getGameString());
-                if (amount > p.getDirhams()) {
-                    amount = p.getDirhams();
-                    p.quitGame();
-                    System.out.println("Player " + p.getColor() + " quit the game");
+                // Calculate payment
+                Marrakech.updateBoard(state);
+                char boardColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
+                int activePlayerNo = Marrakech.getActivePlayerNo();
+                int index = round.get() % activePlayerNo;
+                System.out.println("playerList为"+Marrakech.playerList);
+                round.getAndIncrement();
+                System.out.println("目前为第"+round+"轮次");
+                Player p = Marrakech.playerList.get(index);
+                currentPlayer = Marrakech.playerList.get((index + 1) % activePlayerNo).getColor().getColor();
+                System.out.println("当前走完的玩家为"+p);
+                System.out.println("当前踩到的棋盘颜色为"+boardColor);
+                if (boardColor != p.getColor().getColor() && boardColor != 'n') {
+                    System.out.println(Marrakech.getGameString());
+                    Player anotherPlayer = Marrakech.getPlayerFromColor(boardColor);
+                    int amount = Marrakech.getPaymentAmount(Marrakech.getGameString());
+                    if (amount > p.getDirhams()) {
+                        amount = p.getDirhams();
+                        p.quitGame();
+                        System.out.println("Player " + p.getColor() + " quit the game");
+                    }
+                    p.payment(anotherPlayer, amount);
+                    System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + amount + " dirhams");
                 }
-                p.payment(anotherPlayer, amount);
-                System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + amount + " dirhams");
-            }
 
-            numberOfRotationsInOneRound = 0;
-            displayState(Marrakech.getGameString());
+                numberOfRotationsInOneRound = 0;
+                gamePhase = 1;//这里有问题
+                displayState(Marrakech.getGameString());
+            }
+            else showAlert("Please place rug first");
         });
 
         // Paint diceSquare first
@@ -356,19 +377,19 @@ public class Game extends Application {
                 case 2:
                     Marrakech.createGame("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
-                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
+//                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
                     displayState(initialGameState);
                     break;
                 case 3:
                     Marrakech.createGame("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
-                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
+//                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
                     displayState(initialGameState);
                     break;
                 case 4:
                     Marrakech.createGame("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
-                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
+//                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
                     displayState(initialGameState);
                     break;
             }
@@ -414,11 +435,8 @@ public class Game extends Application {
         return true;
     }
 
-
-
     public void gameStart(String gameState){
         createPlayerSelectionInterface();
-
         while (!checkWinner(gameState)){
             for (Player p : Marrakech.playerList){
                 displayState(gameState);
@@ -434,18 +452,16 @@ public class Game extends Application {
                 // place rug
             }
         }
-
-
     }
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         createPlayerSelectionInterface();
-        //String testStr = "Pc03407iPy06907iPp01207iPr00407iA14NBn00n00r03p05y06r11p08n00n00n00p05c13r11p09r15r15p15y17r13y10y10n00n00y03y17r13p11p11n00c05p04y09y15y15y12n00p16n00y09c14c14y12n00p16n00n00p12p12n00";
-        //Marrakech.createGame(testStr);
-        //displayState(testStr);
-        // Set up the scene and stage
+        String testStr = "Pc03407iPy06907iPp01207iPr00407iA14NBn00n00r03p05y06r11p08n00n00n00p05c13r11p09r15r15p15y17r13y10y10n00n00y03y17r13p11p11n00c05p04y09y15y15y12n00p16n00y09c14c14y12n00p16n00n00p12p12n00";
+        Marrakech.createGame(testStr);
+        displayState(testStr);
+//         Set up the scene and stage
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();

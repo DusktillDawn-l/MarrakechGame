@@ -18,12 +18,12 @@ public class Rug {
 
     // Constructor
     public Rug(int x1, int y1, int x2, int y2, Color color){
-        this.x1 = x1;
-        this.x2 = x2;
-        this.y1 = y1;
-        this.y2 = y2;
-        this.color = color;
-        rugId++;
+            this.x1 = x1;
+            this.x2 = x2;
+            this.y1 = y1;
+            this.y2 = y2;
+            this.color = color;
+            rugId++;
     }
 
     public Rug(String rugString) {//使用此构造函数的潜在问题：导致rug的id不连贯
