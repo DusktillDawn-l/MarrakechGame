@@ -38,7 +38,24 @@ public class Game extends Application {
     private final AtomicInteger round = new AtomicInteger(0);
     private char currentPlayer = 'n';
     private int AIPlayerNumber = 0;
+    private int currantPhase = 1;//define when to rotate, roll dice or place rug.
+    private int rugSelectedNumber = 0;//define the number of rug being selected during select rug phase.
     String initialGameState = "";
+
+
+    public void selectRugToPlace(int row, int column, int currantPhase,char currentPlayer,ArrayList<Rectangle> rectangles){
+        if (currantPhase==1){
+            //选择rug，rugNumber++
+            rugSelectedNumber++;
+            rectangles.get((row) * 7 + column).setFill(charToColor(currentPlayer));
+//            Marrakech.board[row][column] = "noo";
+            //FIXME 解决创建Rug的问题与currantPhase的问题
+        }
+        if (rugSelectedNumber==2){
+            //当选择了2个rug时，进行相对应的判断
+            currantPhase=0;
+        }
+    }
 
     void displayState(String state) {
         int boardSize = 70;
@@ -59,8 +76,10 @@ public class Game extends Application {
             for(int row = 0; row < 7; row++) {
                 double x = 300 + col * (boardSize + gapSize);
                 double y = 120 + row * (boardSize + gapSize);
-
                 Rectangle square = new Rectangle((int) x, (int) y, boardSize, boardSize);
+                square.setOnMouseClicked(event -> {
+                    selectRugToPlace((int) ((square.getX()-300)/(boardSize + gapSize)), (int) ((square.getY()-120)/(boardSize + gapSize)),currantPhase,currentPlayer,rectangles);
+                });
                 square.setFill(Color.ORANGE);
                 square.setStroke(Color.BLACK);
                 rectangles.add(square);
@@ -151,7 +170,6 @@ public class Game extends Application {
                 System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + amount + " dirhams");
             }
 
-
             numberOfRotationsInOneRound = 0;
             displayState(Marrakech.getGameString());
         });
@@ -162,8 +180,6 @@ public class Game extends Application {
         //切换到displayState的界面
         root.getChildren().clear();
         root.getChildren().add(pane);
-
-
 
         String[] splits = state.split("A");
         String playerStr = splits[0];
@@ -340,16 +356,19 @@ public class Game extends Application {
                 case 2:
                     Marrakech.createGame("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
+                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
                     displayState(initialGameState);
                     break;
                 case 3:
                     Marrakech.createGame("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
+                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
                     displayState(initialGameState);
                     break;
                 case 4:
                     Marrakech.createGame("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
+                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
                     displayState(initialGameState);
                     break;
             }
@@ -394,6 +413,8 @@ public class Game extends Application {
         root.getChildren().add(p);
         return true;
     }
+
+
 
     public void gameStart(String gameState){
         createPlayerSelectionInterface();
