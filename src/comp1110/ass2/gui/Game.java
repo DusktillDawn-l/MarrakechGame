@@ -33,7 +33,7 @@ public class Game extends Application {
     private int numberOfRotationsInOneRound =0;
     private int dice = 0;
     private final AtomicInteger round = new AtomicInteger(0);
-    private char currentPlayer = 'n';
+    private char currentPlayer = 'c';
     private int AIPlayerNumber = 0;
     private int gamePhase = 0;//define when to rotate, roll dice or place rug.
     private int gridSelectedNumber = 0;//define the number of rug being selected during select rug phase.
@@ -61,6 +61,9 @@ public class Game extends Application {
                         Marrakech.makePlacement(Marrakech.getGameString(),rug.toString());
                         Marrakech.rugList.add(rug);
                         gamePhase = 0;
+                        round.getAndIncrement();
+                        int index = round.get() % Marrakech.getActivePlayerNo();
+                        this.currentPlayer = Marrakech.playerList.get(index).getColor().getColor();
 
                     }
                     else showAlert("Grid selection invalid\nPlease reselect");
@@ -168,13 +171,7 @@ public class Game extends Application {
                 // Calculate payment
                 Marrakech.updateBoard(state);
                 char boardColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
-                int activePlayerNo = Marrakech.getActivePlayerNo();
-                int index = round.get() % activePlayerNo;
-                System.out.println("playerList为"+Marrakech.playerList);
-                round.getAndIncrement();
-                System.out.println("目前为第"+round+"轮次");
-                Player p = Marrakech.playerList.get(index);
-                currentPlayer = Marrakech.playerList.get((index ) % activePlayerNo).getColor().getColor();
+                Player p = Marrakech.getPlayerFromColor(currentPlayer);
                 System.out.println("当前走完的玩家为"+p);
                 System.out.println("当前踩到的棋盘颜色为"+boardColor);
                 if (boardColor != p.getColor().getColor() && boardColor != 'n') {
