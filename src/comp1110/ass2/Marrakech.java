@@ -450,4 +450,8 @@ public class Marrakech {
         return gameStringBuilder.toString();
     }
 
+    public static char getNextPlayer(char c) {
+        Player p = getPlayerFromColor(c);
+        return p.getColor().next().getColor();
+    }
 }

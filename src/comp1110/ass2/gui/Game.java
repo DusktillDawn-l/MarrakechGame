@@ -39,9 +39,12 @@ public class Game extends Application {
     private int gridSelectedNumber = 0;//define the number of rug being selected during select rug phase.
     private int lastSelectedBoardRow;
     private int lastSelectedBoardColumn;
-    private char p1;
     String initialGameState = "";
 
+    public void nextRound () {
+        round.getAndIncrement();
+        this.currentPlayer = Marrakech.getNextPlayer(currentPlayer);
+    }
     public void selectGridToPlace(int row, int column, int currantPhase, char currentPlayer, ArrayList<Rectangle> rectangles){
         if (currantPhase==1){
             //选择grid, gridNumber++
@@ -61,10 +64,7 @@ public class Game extends Application {
                         Marrakech.makePlacement(Marrakech.getGameString(),rug.toString());
                         Marrakech.rugList.add(rug);
                         gamePhase = 0;
-                        round.getAndIncrement();
-                        int index = round.get() % Marrakech.getActivePlayerNo();
-                        this.currentPlayer = Marrakech.playerList.get(index).getColor().getColor();
-
+                        nextRound();
                     }
                     else showAlert("Grid selection invalid\nPlease reselect");
                 }
@@ -104,6 +104,7 @@ public class Game extends Application {
                 Rectangle square = new Rectangle((int) x, (int) y, boardSize, boardSize);
                 square.setOnMouseClicked(event -> {
                     selectGridToPlace((int) ((square.getX()-300)/(boardSize + gapSize)), (int) ((square.getY()-120)/(boardSize + gapSize)), gamePhase,currentPlayer,rectangles);
+
                 });
                 square.setFill(Color.ORANGE);
                 square.setStroke(Color.BLACK);
@@ -186,12 +187,16 @@ public class Game extends Application {
                     p.payment(anotherPlayer, amount);
                     System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + amount + " dirhams");
                 }
-
                 numberOfRotationsInOneRound = 0;
-                gamePhase = 1;//这里有问题
+                if (p.getInGame() == 'i'){
+                    gamePhase = 1;
+                } else {
+                    nextRound();
+                }
                 displayState(Marrakech.getGameString());
             }
-            else showAlert("Please place rug first");
+            else {showAlert("Please place rug first");}
+
         });
 
         // Paint diceSquare first
@@ -380,14 +385,14 @@ public class Game extends Application {
                     displayState(initialGameState);
                     break;
                 case 3:
-                    Marrakech.createGame("Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-                    initialGameState = "Pc03015iPy03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
+                    Marrakech.createGame("Pc03015iPy03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+                    initialGameState = "Pc03015iPy03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
 //                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
                     displayState(initialGameState);
                     break;
                 case 4:
-                    Marrakech.createGame("Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-                    initialGameState = "Pc03015iPy03015iPr03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
+                    Marrakech.createGame("Pc03015iPy03015iPp03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
+                    initialGameState = "Pc03015iPy03015iPp03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
 //                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
                     displayState(initialGameState);
                     break;
@@ -402,11 +407,11 @@ public class Game extends Application {
         VBox vbox1 = new VBox(20);  // 20 is the spacing between elements
         vbox1.getChildren().addAll(label2, choiceBox2);
 
-// Create an HBox to hold the choice boxes in parallel
+        // Create an HBox to hold the choice boxes in parallel
         HBox hbox = new HBox(20);  // 20 is the spacing between the choice boxes
         hbox.getChildren().addAll(vbox, vbox1);
 
-// Add elements to the VBox, including the HBox
+        // Add elements to the VBox, including the HBox
         whole.setAlignment(Pos.CENTER);
         whole.setFillWidth(true);
         whole.setPrefSize(300, 300);
@@ -457,9 +462,9 @@ public class Game extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         createPlayerSelectionInterface();
-//        String testStr = "Pc03407iPy06907iPp01207iPr00407iA14NBn00n00r03p05y06r11p08n00n00n00p05c13r11p09r15r15p15y17r13y10y10n00n00y03y17r13p11p11n00c05p04y09y15y15y12n00p16n00y09c14c14y12n00p16n00n00p12p12n00";
-//        Marrakech.createGame(testStr);
-//        displayState(testStr);
+        String testStr = "Pc00107iPy06907iPp00207iPr00107iA14NBy00y00r03p05y06y11p08y00y00y00p05y13y11p09r15r15y15y17r13y10y10y00y00y03y17r13p11p11y00c05p04y09y15y15y12y00p16y00y09c14c14y12y00p16y00y00p12p12y00";
+        Marrakech.createGame(testStr);
+        displayState(testStr);
 //         Set up the scene and stage
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(scene);
