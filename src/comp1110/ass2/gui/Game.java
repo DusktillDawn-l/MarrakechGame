@@ -60,9 +60,13 @@ public class Game extends Application {
                         || (column == lastSelectedBoardColumn && Math.abs(row - lastSelectedBoardRow) == 1)){
                     //when the two places selected can construct a rug
                     Rug rug = new Rug(lastSelectedBoardRow, lastSelectedBoardColumn, row, column, comp1110.ass2.Color.valueOf(String.valueOf(currentPlayer)));
-                    if (Marrakech.isRugValid(Marrakech.getGameString(),rug.toString())&&Marrakech.isPlacementValid(Marrakech.getGameString(),rug.toString())){
+                    while (!Marrakech.isRugValid(Marrakech.getGameString(),rug.toString())){
+                        rug = new Rug(lastSelectedBoardRow, lastSelectedBoardColumn, row, column, comp1110.ass2.Color.valueOf(String.valueOf(currentPlayer)));
+                    }
+                    System.out.println("currentRug: "+rug);
+                    if (Marrakech.isPlacementValid(Marrakech.getGameString(),rug.toString()))
+                    {
                         Marrakech.makePlacement(Marrakech.getGameString(),rug.toString());
-                        Marrakech.rugList.add(rug);
                         gamePhase = 0;
                         nextRound();
                     }
@@ -315,13 +319,13 @@ public class Game extends Application {
         pane.getChildren().addAll(assamArrow);
 
         // Create a Text component for round number
-        Text roundNumber = new Text();
-        roundNumber.setX(1000);
-        roundNumber.setY(50);
-        roundNumber.setFill(Color.BLACK);
-        roundNumber.setFont(Font.font(30));
-        roundNumber.setText("Round " + round.get());
-        pane.getChildren().add(roundNumber);
+//        Text roundNumber = new Text();
+//        roundNumber.setX(1000);
+//        roundNumber.setY(50);
+//        roundNumber.setFill(Color.BLACK);
+//        roundNumber.setFont(Font.font(30));
+//        roundNumber.setText("Round " + round.get());
+//        pane.getChildren().add(roundNumber);
     }
 
     // Create players and return the game string
@@ -462,7 +466,7 @@ public class Game extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         createPlayerSelectionInterface();
-        String testStr = "Pc00107iPy06907iPp00207iPr00107iA14NBy00y00r03p05y06y11p08y00y00y00p05y13y11p09r15r15y15y17r13y10y10y00y00y03y17r13p11p11y00c05p04y09y15y15y12y00p16y00y09c14c14y12y00p16y00y00p12p12y00";
+        String testStr = "Pc03407iPy06907iPp01207iPr00407iA14NBn00n00r03p05y06r11p08n00n00n00p05c13r11p09r15r15p15y17r13y10y10n00n00y03y17r13p11p11n00c05p04y09y15y15y12n00p16n00y09c14c14y12n00p16n00n00p12p12n00";
         Marrakech.createGame(testStr);
         displayState(testStr);
 //         Set up the scene and stage
