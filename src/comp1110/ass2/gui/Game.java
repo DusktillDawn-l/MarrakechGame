@@ -44,6 +44,9 @@ public class Game extends Application {
     public void nextRound () {
         round.getAndIncrement();
         this.currentPlayer = Marrakech.getNextPlayer(currentPlayer);
+        while (Marrakech.getPlayerFromColor(currentPlayer) == null){
+            currentPlayer = Marrakech.getNextPlayer(currentPlayer);
+        }
     }
     public void selectGridToPlace(int row, int column, int currantPhase, char currentPlayer, ArrayList<Rectangle> rectangles){
         if (currantPhase==1){
@@ -67,6 +70,7 @@ public class Game extends Application {
                     if (Marrakech.isPlacementValid(Marrakech.getGameString(),rug.toString()))
                     {
                         Marrakech.makePlacement(Marrakech.getGameString(),rug.toString());
+                        Marrakech.rugList.add(rug);
                         gamePhase = 0;
                         nextRound();
                     }

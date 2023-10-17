@@ -45,7 +45,7 @@ public class Marrakech {
                 return p;
             }
         }
-        throw new RuntimeException("No such player");
+        return null;
     }
 
     // get no of players in game
@@ -451,7 +451,7 @@ public class Marrakech {
     }
 
     public static char getNextPlayer(char c) {
-        Player p = getPlayerFromColor(c);
-        return p.getColor().next().getColor();
+        Color color = Color.valueOf(String.valueOf(c));
+        return color.next().getColor();
     }
 }
