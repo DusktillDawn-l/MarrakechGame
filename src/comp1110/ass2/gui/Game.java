@@ -181,8 +181,6 @@ public class Game extends Application {
                 Marrakech.updateBoard(state);
                 char boardColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
                 Player p = Marrakech.getPlayerFromColor(currentPlayer);
-                System.out.println("当前走完的玩家为"+p);
-                System.out.println("当前踩到的棋盘颜色为"+boardColor);
                 if (boardColor != p.getColor().getColor() && boardColor != 'n') {
                     System.out.println(Marrakech.getGameString());
                     Player anotherPlayer = Marrakech.getPlayerFromColor(boardColor);
@@ -194,6 +192,7 @@ public class Game extends Application {
                     }
                     p.payment(anotherPlayer, amount);
                     System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + amount + " dirhams");
+
                 }
                 numberOfRotationsInOneRound = 0;
                 if (p.getInGame() == 'i'){
@@ -322,6 +321,9 @@ public class Game extends Application {
         pane.getChildren().add(diceNumber);
         pane.getChildren().addAll(assamArrow);
 
+        // Check whether the game is over
+        checkWinner(Marrakech.getGameString());
+
         // Create a Text component for round number
 //        Text roundNumber = new Text();
 //        roundNumber.setX(1000);
@@ -434,43 +436,24 @@ public class Game extends Application {
     }
 
     // check game over and display the winner
-    public boolean checkWinner(String gameState) {
+    public void checkWinner(String gameState) {
         char winner = Marrakech.getWinner(gameState);
-        if (winner == 'n') { return false; }
-        Text p = new Text();
-        p.setText("Winner is Player " + charToColorStr(winner));
-        p.setStyle("-fx-font: 50 arial;");
-        p.setFill(charToColor(winner));
-        p.setX(400);
-        p.setY(350);
-        root.getChildren().add(p);
-        return true;
-    }
-
-    public void gameStart(String gameState){
-        createPlayerSelectionInterface();
-        while (!checkWinner(gameState)){
-            for (Player p : Marrakech.playerList){
-                displayState(gameState);
-                // rotate Assam
-                // move Assam
-                // make payment
-                Marrakech.updateBoard(gameState);
-                char currentColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
-                if (currentColor != p.getColor().getColor()) {
-                    Player anotherPlayer = Marrakech.getPlayerFromColor(currentColor);
-                    p.payment(anotherPlayer, Marrakech.getPaymentAmount(gameState));
-                }
-                // place rug
-            }
+        if (winner != 'n') {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game Over");
+            alert.setHeaderText("The winner is Player " + winner + " !!");
+            alert.setContentText("Please quit the game");
+            alert.showAndWait();
+            return;
         }
+        System.out.println("Winner is Player " + winner);
     }
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         createPlayerSelectionInterface();
-        String testStr = "Pc03407iPy06907iPp01207iPr00407iA14NBn00n00r03p05y06r11p08n00n00n00p05c13r11p09r15r15p15y17r13y10y10n00n00y03y17r13p11p11n00c05p04y09y15y15y12n00p16n00y09c14c14y12n00p16n00n00p12p12n00";
+        String testStr = "Pc03401iPy06901iPp00101iPr00101iA14NBn00n00r03p05y06r11p08n00n00n00p05c13r11p09r15r15p15y17r13y10y10n00n00y03y17r13p11p11n00c05p04y09y15y15y12n00p16n00y09c14c14y12n00p16n00n00p12p12n00";
         Marrakech.createGame(testStr);
         displayState(testStr);
 //         Set up the scene and stage

@@ -366,7 +366,7 @@ public class Marrakech {
                     }
                 }
             }
-            // find the dihams of each player
+            // find the dirhams of each player
             int lastC = playerStr.lastIndexOf("Pc");
             int lastY = playerStr.lastIndexOf("Py");
             int lastR = playerStr.lastIndexOf("P" +
