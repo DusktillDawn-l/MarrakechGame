@@ -19,13 +19,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static comp1110.ass2.Helper.charToColor;
-import static comp1110.ass2.Helper.charToColorStr;
 
 public class Game extends Application {
-
 
     private final Group root = new Group();
     private static final int WINDOW_WIDTH = 1200;
@@ -46,6 +45,10 @@ public class Game extends Application {
         this.currentPlayer = Marrakech.getNextPlayer(currentPlayer);
         while (Marrakech.getPlayerFromColor(currentPlayer) == null){
             currentPlayer = Marrakech.getNextPlayer(currentPlayer);
+        }
+        System.out.println("current player: "+currentPlayer);
+        if (isAIplayer(currentPlayer, AIPlayerNumber, Marrakech.playerList.size())){
+            AIPlayerTurn();
         }
     }
     public void selectGridToPlace(int row, int column, int currantPhase, char currentPlayer, ArrayList<Rectangle> rectangles){
@@ -173,34 +176,7 @@ public class Game extends Application {
 
         roll.setOnMouseClicked(e -> {
             if (gamePhase==0){
-                int randomDiceValue = Marrakech.rollDie();
-                dice = randomDiceValue;
-                Marrakech.assam.move(randomDiceValue);
-
-                // Calculate payment
-                Marrakech.updateBoard(state);
-                char boardColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
-                Player p = Marrakech.getPlayerFromColor(currentPlayer);
-                if (boardColor != p.getColor().getColor() && boardColor != 'n') {
-                    System.out.println(Marrakech.getGameString());
-                    Player anotherPlayer = Marrakech.getPlayerFromColor(boardColor);
-                    int amount = Marrakech.getPaymentAmount(Marrakech.getGameString());
-                    if (amount > p.getDirhams()) {
-                        amount = p.getDirhams();
-                        p.quitGame();
-                        System.out.println("Player " + p.getColor() + " quit the game");
-                    }
-                    p.payment(anotherPlayer, amount);
-                    System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + amount + " dirhams");
-
-                }
-                numberOfRotationsInOneRound = 0;
-                if (p.getInGame() == 'i'){
-                    gamePhase = 1;
-                } else {
-                    nextRound();
-                }
-                displayState(Marrakech.getGameString());
+                pressRoll();
             }
             else {showAlert("Please place rug first");}
 
@@ -375,7 +351,7 @@ public class Game extends Application {
         //在这里进行了游戏玩家数与棋盘的初始化
         confirmButton.setOnAction(e -> {
             int selectedValue = choiceBox.getValue();
-            int AIPlayerNumber = choiceBox2.getValue();
+            AIPlayerNumber = choiceBox2.getValue();
             if (selectedValue <= AIPlayerNumber){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
 
@@ -435,6 +411,35 @@ public class Game extends Application {
         whole.setLayoutY((WINDOW_HEIGHT - whole.getPrefHeight()) / 2 - 25);
     }
 
+    public void pressRoll(){
+        int randomDiceValue = Marrakech.rollDie();
+        dice = randomDiceValue;
+        Marrakech.assam.move(randomDiceValue);
+
+        char boardColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
+        Player p = Marrakech.getPlayerFromColor(currentPlayer);
+        if (boardColor != p.getColor().getColor() && boardColor != 'n') {
+            System.out.println(Marrakech.getGameString());
+            Player anotherPlayer = Marrakech.getPlayerFromColor(boardColor);
+            int amount = Marrakech.getPaymentAmount(Marrakech.getGameString());
+            if (amount > p.getDirhams()) {
+                amount = p.getDirhams();
+                p.quitGame();
+                System.out.println("Player " + p.getColor() + " quit the game");
+            }
+            p.payment(anotherPlayer, amount);
+            System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + amount + " dirhams");
+
+        }
+        numberOfRotationsInOneRound = 0;
+        if (p.getInGame() == 'i'){
+            gamePhase = 1;
+        } else {
+            nextRound();
+        }
+        displayState(Marrakech.getGameString());
+    }
+
     // check game over and display the winner
     public void checkWinner(String gameState) {
         char winner = Marrakech.getWinner(gameState);
@@ -449,13 +454,63 @@ public class Game extends Application {
         System.out.println("Winner is Player " + winner);
     }
 
+    // Check whether the current player is AI
+    public boolean isAIplayer (char currentPlayer, int AIPlayerNumber, int playerNumber) {
+        String fixedOrder = "cypr";
+
+        String currentPlayers = fixedOrder.substring(0, playerNumber);
+        String aiPlayers = currentPlayers.substring(playerNumber - AIPlayerNumber);
+        // Check if the currentPlayer is among the AI players
+        return aiPlayers.indexOf(currentPlayer) != -1;
+    }
+
+    // AI player's turn
+    public void AIPlayerTurn () {
+        // roll dice first
+        pressRoll();
+        // place rug in random position
+        int randomX = 0;
+        int randomY = 0;
+        int randomX2 = 0;
+        int randomY2 = 0;
+        String testRug = "";
+        int i = 0;
+        while (!Marrakech.isPlacementValid(Marrakech.getGameString(),testRug) && i < 100){
+            int x = Marrakech.assam.getX();
+            int y = Marrakech.assam.getY();
+            Random r = new Random();
+            randomX = (r.nextBoolean() ? 1 : -1) + x;
+            randomY = (r.nextBoolean() ? 1 : -1) + y;
+            int[] dx = {-1, 1, 0, 0};
+            int[] dy = {0, 0, -1, 1};
+            int index = r.nextInt(4);
+            // Generate a random neighbor
+            randomX2 = randomX + dx[index];
+            randomY2 = randomY + dy[index];
+            i++;
+            testRug = currentPlayer + "99" + randomX + randomY + randomX2 + randomY2;
+        }
+        if (i == 100){
+            System.out.println(testRug);
+            throw new RuntimeException("AI player cannot find a valid rug");}
+        System.out.println(testRug);
+        Rug rug = new Rug(randomX, randomY, randomX2, randomY2, comp1110.ass2.Color.valueOf(String.valueOf(currentPlayer)));
+        System.out.println("currentRug: "+rug);
+        Marrakech.makePlacement(Marrakech.getGameString(),rug.toString());
+        Marrakech.rugList.add(rug);
+
+        // Go to next player's turn
+        gamePhase = 0;
+        nextRound();
+    }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         createPlayerSelectionInterface();
-        String testStr = "Pc03401iPy06901iPp00101iPr00101iA14NBn00n00r03p05y06r11p08n00n00n00p05c13r11p09r15r15p15y17r13y10y10n00n00y03y17r13p11p11n00c05p04y09y15y15y12n00p16n00y09c14c14y12n00p16n00n00p12p12n00";
-        Marrakech.createGame(testStr);
-        displayState(testStr);
+//        String testStr = "Pc02608iPy01908iPp02108iPr05209iA30SBn00n00r11c09c09n00n00r07r04r11r08c02r00r00r07r04n00y12y12r02p01p05y11y11p11c07r02p01p05y08y08p11r10r10y10n00c08n00c00n00p08y10n00n00n00c00n00c10c10";
+//        Marrakech.createGame(testStr);
+//        displayState(testStr);
 //         Set up the scene and stage
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(scene);

@@ -1,9 +1,12 @@
 package test;
 
 import comp1110.ass2.Marrakech;
+import comp1110.ass2.gui.Game;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import java.util.Random;
 
 public class GameTest {
     @Test
@@ -29,5 +32,18 @@ public class GameTest {
         assertEquals(Marrakech.getNextPlayer('y'), 'p');
         assertEquals(Marrakech.getNextPlayer('r'), 'c');
     }
+
+    // test isAIplayer
+    @Test
+    public void testIsAIplayer() {
+        Game game = new Game();
+        assertFalse(game.isAIplayer('c', 0, 2));
+        assertFalse(game.isAIplayer('c', 1, 2));
+        assertTrue(game.isAIplayer('y', 1, 2));
+        assertFalse(game.isAIplayer('y', 1, 3));
+        assertTrue(game.isAIplayer('p', 1, 3));
+        assertTrue(game.isAIplayer('y', 2, 3));
+    }
+
 }
 

@@ -26,7 +26,8 @@ public class Rug {
             rugId++;
     }
 
-    public Rug(String rugString) {//使用此构造函数的潜在问题：导致rug的id不连贯
+    // Create rug from string
+    public Rug(String rugString) {
         if (rugString.length()!=rugStringLength)
             throw new RuntimeException("Invalid Rug String");
         else{

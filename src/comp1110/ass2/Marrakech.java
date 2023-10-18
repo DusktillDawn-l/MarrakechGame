@@ -82,6 +82,9 @@ public class Marrakech {
         // Can't create rug object here, we don't know whether the rug string is valid
         // check color is valid and the player is in game
         String pStr = gameString.substring(0, gameString.indexOf('A'));
+        if (rug.length() != 7) {
+            return false;
+        }
         char color = rug.charAt(0);
         if (!pStr.contains(String.valueOf(color)) ||
                 ((color != 'c') && (color != 'r') && (color != 'y') && (color != 'p'))){
@@ -195,6 +198,9 @@ public class Marrakech {
      * @return true if the placement is valid, and false otherwise.
      */
     public static boolean isPlacementValid(String gameState, String rug) {
+        if (!isRugValid(gameState, rug)) {
+            return false;
+        }
         String assamAndBoard = gameState.split("A")[1];
         String assam = assamAndBoard.substring(0, 3);
         String boardState = assamAndBoard.substring(4);
