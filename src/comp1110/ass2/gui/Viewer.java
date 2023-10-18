@@ -67,14 +67,9 @@ public class Viewer extends Application {
                 pane.getChildren().add(square);
             }
         }
-        //切换到displayState的界面
+        //switch to displayState interface
         root.getChildren().clear();
         root.getChildren().add(pane);
-//        Scene scene = new Scene(pane, 1200, 700);
-//        Stage primaryStage = new Stage();
-//        primaryStage.setTitle("Board");
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
 
         String[] splits = state.split("A");
         String playerStr = splits[0];
@@ -187,7 +182,6 @@ public class Viewer extends Application {
 
 
 
-    //旧的代码
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Marrakech Viewer");

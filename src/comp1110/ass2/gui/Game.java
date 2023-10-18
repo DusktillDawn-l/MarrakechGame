@@ -51,9 +51,18 @@ public class Game extends Application {
             AIPlayerTurn();
         }
     }
+
+    /**
+     * Select grid to place rug, two grid can combine to a rug
+     * @param row the row coordinate of board selected
+     * @param column the column coordinate of board selected
+     * @param currantPhase determine whether it is right phase to place rug
+     * @param currentPlayer the player who is placing this rug
+     * @param rectangles get the rectangles that has been selected
+     */
     public void selectGridToPlace(int row, int column, int currantPhase, char currentPlayer, ArrayList<Rectangle> rectangles){
         if (currantPhase==1){
-            //选择grid, gridNumber++
+            //select grid, gridNumber++
             gridSelectedNumber++;
             rectangles.get((row) * 7 + column).setFill(charToColor(currentPlayer));
 
@@ -70,6 +79,7 @@ public class Game extends Application {
                         rug = new Rug(lastSelectedBoardRow, lastSelectedBoardColumn, row, column, comp1110.ass2.Color.valueOf(String.valueOf(currentPlayer)));
                     }
                     System.out.println("currentRug: "+rug);
+                    //if the placement is valid, place the rug
                     if (Marrakech.isPlacementValid(Marrakech.getGameString(),rug.toString()))
                     {
                         Marrakech.makePlacement(Marrakech.getGameString(),rug.toString());
@@ -124,26 +134,26 @@ public class Game extends Application {
             }
         }
 
-        // 创建左转箭头
+        // create left turn arrow
         Polygon leftArrow = new Polygon();
         leftArrow.getPoints().addAll(
-                1000.0, 300.0,  // 左侧顶点
-                1050.0, 350.0,  // 下方顶点
-                1050.0, 250.0   // 上方顶点
+                1000.0, 300.0,  // left vertex
+                1050.0, 350.0,  // under vertex
+                1050.0, 250.0   // top vertex
         );
         leftArrow.setFill(Color.BLACK);
 
-        // 创建右转箭头
+        // create right turn arrow
         Polygon rightArrow = new Polygon();
         rightArrow.getPoints().addAll(
-                1150.0, 300.0,  // 右侧顶点
-                1100.0, 350.0,  // 下方顶点
-                1100.0, 250.0   // 上方顶点
+                1150.0, 300.0,  // right vertex
+                1100.0, 350.0,  // under vertex
+                1100.0, 250.0   // top vertex
         );
         rightArrow.setFill(Color.BLACK);
 
         leftArrow.setOnMouseClicked(e -> {
-                // 这里执行左转操作
+                //turn left
             if (numberOfRotationsInOneRound >=0){
                 Marrakech.rotateAssam(Marrakech.assam.toString(), 270);
                 numberOfRotationsInOneRound--;
@@ -152,7 +162,7 @@ public class Game extends Application {
         });
 
         rightArrow.setOnMouseClicked(e -> {
-            // 这里执行右转操作
+            // turn right
             if (numberOfRotationsInOneRound <=0){
                 Marrakech.rotateAssam(Marrakech.assam.toString(), 90);
                 numberOfRotationsInOneRound++;
@@ -185,7 +195,7 @@ public class Game extends Application {
         // Paint diceSquare first
         pane.getChildren().addAll(diceSquare, roll);
 
-        //切换到displayState的界面
+        //switch to displayState interface
         root.getChildren().clear();
         root.getChildren().add(pane);
 
@@ -299,15 +309,6 @@ public class Game extends Application {
 
         // Check whether the game is over
         checkWinner(Marrakech.getGameString());
-
-        // Create a Text component for round number
-//        Text roundNumber = new Text();
-//        roundNumber.setX(1000);
-//        roundNumber.setY(50);
-//        roundNumber.setFill(Color.BLACK);
-//        roundNumber.setFont(Font.font(30));
-//        roundNumber.setText("Round " + round.get());
-//        pane.getChildren().add(roundNumber);
     }
 
     // Create players and return the game string
@@ -367,19 +368,16 @@ public class Game extends Application {
                 case 2:
                     Marrakech.createGame("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
-//                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
                     displayState(initialGameState);
                     break;
                 case 3:
                     Marrakech.createGame("Pc03015iPy03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
-//                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
                     displayState(initialGameState);
                     break;
                 case 4:
                     Marrakech.createGame("Pc03015iPy03015iPp03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iPp03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
-//                    currentPlayer = Marrakech.playerList.get(0).getColor().getColor();
                     displayState(initialGameState);
                     break;
             }
@@ -508,10 +506,6 @@ public class Game extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         createPlayerSelectionInterface();
-//        String testStr = "Pc02608iPy01908iPp02108iPr05209iA30SBn00n00r11c09c09n00n00r07r04r11r08c02r00r00r07r04n00y12y12r02p01p05y11y11p11c07r02p01p05y08y08p11r10r10y10n00c08n00c00n00p08y10n00n00n00c00n00c10c10";
-//        Marrakech.createGame(testStr);
-//        displayState(testStr);
-//         Set up the scene and stage
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();
