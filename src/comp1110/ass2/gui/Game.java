@@ -24,6 +24,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static comp1110.ass2.Helper.charToColor;
 
+/**
+ * Authorship
+ * Heng Sun u7611510
+ * Runyao Wang u6812566
+ * Yanbai Jin u7706930
+ */
 public class Game extends Application {
 
     private final Group root = new Group();

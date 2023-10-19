@@ -1,5 +1,10 @@
 package comp1110.ass2;
 
+/**
+ * Authorship
+ * Heng Sun u7611510
+ * Runyao Wang u6812566
+ */
 public enum Direction {
     N('N'),//north
     E('E'),//east

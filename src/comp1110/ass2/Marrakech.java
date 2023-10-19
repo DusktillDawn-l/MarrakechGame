@@ -7,6 +7,12 @@ import java.util.Random;
 
 import static comp1110.ass2.Helper.*;
 
+/**
+ * Authorship
+ * Heng Sun u7611510
+ * Runyao Wang u6812566
+ * Yanbai Jin u7706930
+ */
 public class Marrakech {
     public static Board board;
     public static Assam assam;

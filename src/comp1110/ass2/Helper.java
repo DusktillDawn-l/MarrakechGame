@@ -1,6 +1,10 @@
 package comp1110.ass2;
 import javafx.scene.paint.Color;
 
+/**
+ * Authorship
+ * Runyao Wang u6812566
+ */
 // Class for helper functions
 public class Helper {
 

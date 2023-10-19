@@ -1,5 +1,11 @@
 package comp1110.ass2;
 
+/**
+ * Authorship
+ * Heng Sun u7611510
+ * Runyao Wang u6812566
+ * Yanbai Jin u7706930
+ */
 public class Rug {
     private final Color color;
     private int x1;

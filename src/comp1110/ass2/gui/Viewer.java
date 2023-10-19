@@ -32,6 +32,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
+/**
+ * Authorship
+ * Heng Sun u7611510
+ * Runyao Wang u6812566
+ */
+
 public class Viewer extends Application {
 
     private static final int VIEWER_WIDTH = 1200;

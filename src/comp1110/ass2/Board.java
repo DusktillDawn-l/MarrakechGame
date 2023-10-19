@@ -1,5 +1,10 @@
 package comp1110.ass2;
 
+/**
+ * Authorship
+ * Heng Sun u7611510
+ * Runyao Wang u6812566
+ */
 public class Board {
     public static final int row = 7;
     public static final int column = 7;
