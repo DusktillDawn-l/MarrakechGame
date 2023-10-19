@@ -53,7 +53,6 @@ public class Game extends Application {
         while (Marrakech.getPlayerFromColor(currentPlayer) == null){
             currentPlayer = Marrakech.getNextPlayer(currentPlayer);
         }
-        System.out.println("current player: "+currentPlayer);
         if (isAIplayer(currentPlayer, AIPlayerNumber, Marrakech.playerList.size())){
             AIPlayerTurn();
         }
@@ -85,7 +84,6 @@ public class Game extends Application {
                     while (!Marrakech.isRugValid(Marrakech.getGameString(),rug.toString())){
                         rug = new Rug(lastSelectedBoardRow, lastSelectedBoardColumn, row, column, comp1110.ass2.Color.valueOf(String.valueOf(currentPlayer)));
                     }
-                    System.out.println("currentRug: "+rug);
                     //if the placement is valid, place the rug
                     if (Marrakech.isPlacementValid(Marrakech.getGameString(),rug.toString()))
                     {
@@ -424,20 +422,16 @@ public class Game extends Application {
         Player p = Marrakech.getPlayerFromColor(currentPlayer);
         // p can't be null since the getNextPlayer method has already checked
         if (boardColor != p.getColor().getColor() && boardColor != 'n') {
-            System.out.println(Marrakech.getGameString());
             Player anotherPlayer = Marrakech.getPlayerFromColor(boardColor);
             int amount = Marrakech.getPaymentAmount(Marrakech.getGameString());
             if (amount > p.getDirhams()) {
                 amount = p.getDirhams();
                 p.quitGame();
-                System.out.println("Player " + p.getColor() + " quit the game");
             }
             // Only pay to ingame player
             if (anotherPlayer.getInGame() == 'i'){
                 p.payment(anotherPlayer, amount);
             }
-            System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + amount + " dirhams");
-
         }
         numberOfRotationsInOneRound = 0;
         if (p.getInGame() == 'i'){
@@ -513,11 +507,9 @@ public class Game extends Application {
         }
         // For bug testing
         if (i == 100){
-            System.out.println(testRug);
             throw new RuntimeException("AI player cannot find a valid rug");}
         // Place the rug
         Rug rug = new Rug(randomX, randomY, randomX2, randomY2, comp1110.ass2.Color.valueOf(String.valueOf(currentPlayer)));
-        System.out.println("currentRug: "+rug);
         Marrakech.makePlacement(Marrakech.getGameString(),rug.toString());
         Marrakech.rugList.add(rug);
 
