@@ -18,9 +18,9 @@ declaration: >-
 # you want to just submit classes):
 method:
    - selectGridToPlace
-   - https://gitlab.cecs.anu.edu.au/u7611510/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Game.java#L55-98
+   - https://gitlab.cecs.anu.edu.au/u7611510/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Game.java#L61-102
    - getPaymentAmount & traverse
-   - https://gitlab.cecs.anu.edu.au/u7611510/comp1110-ass2/-/blob/main/src/comp1110/ass2/Marrakech.java#L257-327
+   - https://gitlab.cecs.anu.edu.au/u7611510/comp1110-ass2/-/blob/main/src/comp1110/ass2/Marrakech.java#L265-335
 
 # sign *your* name and uid here
 name: Heng Sun
