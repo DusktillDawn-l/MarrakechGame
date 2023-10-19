@@ -1,3 +1,7 @@
+/**
+ * Authorship
+ * Runyao Wang u6812566
+ */
 package test;
 
 import comp1110.ass2.Marrakech;

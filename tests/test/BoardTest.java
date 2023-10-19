@@ -1,3 +1,7 @@
+/**
+ * Authorship
+ * Heng Sun u7611510
+ */
 package test;
 
 import comp1110.ass2.Board;

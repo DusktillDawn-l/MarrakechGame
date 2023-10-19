@@ -1,3 +1,7 @@
+/**
+ * Authorship
+ * Yanbai Jin u7706930
+ */
 package test;
 
 import comp1110.ass2.Color;
