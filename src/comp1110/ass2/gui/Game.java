@@ -23,6 +23,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static comp1110.ass2.Helper.charToColor;
+import static comp1110.ass2.Helper.charToColorStr;
 
 /**
  * Authorship
@@ -123,7 +124,6 @@ public class Game extends Application {
         boardView.setFitWidth(680);
         pane.getChildren().add(boardView);
 
-
         for (int col = 0; col < 7; col++) {
             for(int row = 0; row < 7; row++) {
                 double x = 300 + col * (boardSize + gapSize);
@@ -180,16 +180,13 @@ public class Game extends Application {
 
         // Create a Rectangle component to represent the dice
         Rectangle diceSquare = new Rectangle(1007, 620, 85, 55);
-
         diceSquare.setFill(Color.RED);
         Text roll = new Text("ROLL");
         roll.setX(1012);
         roll.setY(660);
         roll.setFont(Font.font(30));
 
-        // Create a Text component to display the number of the side of the dice
-
-
+        // Add an event handler to the dice square
         roll.setOnMouseClicked(e -> {
             if (gamePhase==0){
                 pressRoll();
@@ -355,7 +352,7 @@ public class Game extends Application {
         confirmButton.setMinSize(200, 50);
         
 
-        //在这里进行了游戏玩家数与棋盘的初始化
+        // Initialize the game and players
         confirmButton.setOnAction(e -> {
             int selectedValue = choiceBox.getValue();
             AIPlayerNumber = choiceBox2.getValue();
@@ -390,15 +387,15 @@ public class Game extends Application {
 
         });
 
-// Create a VBox to hold the label, choice box, and button
-        VBox whole = new VBox(20);  // 20 is the spacing between elements
-        VBox vbox = new VBox(20);  // 20 is the spacing between elements
+        // Create a VBox to hold the label, choice box, and button
+        VBox whole = new VBox(20);
+        VBox vbox = new VBox(20);
         vbox.getChildren().addAll(label, choiceBox);
-        VBox vbox1 = new VBox(20);  // 20 is the spacing between elements
+        VBox vbox1 = new VBox(20);
         vbox1.getChildren().addAll(label2, choiceBox2);
 
         // Create an HBox to hold the choice boxes in parallel
-        HBox hbox = new HBox(20);  // 20 is the spacing between the choice boxes
+        HBox hbox = new HBox(20);
         hbox.getChildren().addAll(vbox, vbox1);
 
         // Add elements to the VBox, including the HBox
@@ -415,13 +412,17 @@ public class Game extends Application {
         whole.setLayoutY((WINDOW_HEIGHT - whole.getPrefHeight()) / 2 - 25);
     }
 
+    // Roll dice, move assam, and check whether the player needs to pay
     public void pressRoll(){
+        // Roll dice
         int randomDiceValue = Marrakech.rollDie();
         dice = randomDiceValue;
         Marrakech.assam.move(randomDiceValue);
 
+        // Make payment
         char boardColor = Marrakech.board.getColor(Marrakech.assam.getX(), Marrakech.assam.getY());
         Player p = Marrakech.getPlayerFromColor(currentPlayer);
+        // p can't be null since the getNextPlayer method has already checked
         if (boardColor != p.getColor().getColor() && boardColor != 'n') {
             System.out.println(Marrakech.getGameString());
             Player anotherPlayer = Marrakech.getPlayerFromColor(boardColor);
@@ -431,7 +432,10 @@ public class Game extends Application {
                 p.quitGame();
                 System.out.println("Player " + p.getColor() + " quit the game");
             }
-            p.payment(anotherPlayer, amount);
+            // Only pay to ingame player
+            if (anotherPlayer.getInGame() == 'i'){
+                p.payment(anotherPlayer, amount);
+            }
             System.out.println("Player " + p.getColor() + " paid " + anotherPlayer.getColor() + " " + amount + " dirhams");
 
         }
@@ -450,12 +454,10 @@ public class Game extends Application {
         if (winner != 'n') {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Game Over");
-            alert.setHeaderText("The winner is Player " + winner + " !!");
+            alert.setHeaderText("The winner is Player " + charToColorStr(winner) + " !!");
             alert.setContentText("Please quit the game");
             alert.showAndWait();
-            return;
         }
-        System.out.println("Winner is Player " + winner);
     }
 
     // Check whether the current player is AI
@@ -479,7 +481,9 @@ public class Game extends Application {
         int randomY2 = 0;
         String testRug = "";
         int i = 0;
+        // Try random rug near Assam until valid rug is found
         while (!Marrakech.isPlacementValid(Marrakech.getGameString(),testRug) && i < 100){
+            // generate a random position
             int x = Marrakech.assam.getX();
             int y = Marrakech.assam.getY();
             Random r = new Random();
@@ -494,10 +498,11 @@ public class Game extends Application {
             i++;
             testRug = currentPlayer + "99" + randomX + randomY + randomX2 + randomY2;
         }
+        // For bug testing
         if (i == 100){
             System.out.println(testRug);
             throw new RuntimeException("AI player cannot find a valid rug");}
-        System.out.println(testRug);
+        // Place the rug
         Rug rug = new Rug(randomX, randomY, randomX2, randomY2, comp1110.ass2.Color.valueOf(String.valueOf(currentPlayer)));
         System.out.println("currentRug: "+rug);
         Marrakech.makePlacement(Marrakech.getGameString(),rug.toString());

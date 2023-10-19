@@ -151,6 +151,8 @@ public class Marrakech {
      * @return true if the game is over, or false otherwise.
      */
     public static boolean isGameOver(String currentGame) {
+        playerList.clear();
+        createGame(currentGame);
         ArrayList<String> players = new ArrayList<>();
         for (int i = 0; i <= currentGame.length() - 8; i++) {
             if (currentGame.charAt(i) == 'P') {
@@ -160,15 +162,17 @@ public class Marrakech {
         }
         int quitGameNumber = 0;
         for (String player: players) {
-            if (player.charAt(7)=='o'){
+            if (player.charAt(7) == 'o') {
                 quitGameNumber++;
                 continue;
             }
-            if (player.charAt(5)=='0'&& player.charAt(6)=='0'&& player.charAt(7)=='i'){
+            if (player.charAt(5) == '0' && player.charAt(6) == '0' && player.charAt(7) == 'i') {
                 quitGameNumber++;
             }
         }
-        return quitGameNumber==4;
+        return quitGameNumber==playerList.size();
+
+
     }
 
     /**
@@ -381,14 +385,14 @@ public class Marrakech {
             // find the dirhams of each player
             int lastC = playerStr.lastIndexOf("Pc");
             int lastY = playerStr.lastIndexOf("Py");
-            int lastR = playerStr.lastIndexOf("P" +
-                    "r");
+            int lastR = playerStr.lastIndexOf("Pr");
             int lastP = playerStr.lastIndexOf("Pp");
 
-            int dirhamC = Integer.parseInt(playerStr.substring(2 + lastC, 5 + lastC));
-            int dirhamY = Integer.parseInt(playerStr.substring(2 + lastY, 5 + lastY));
-            int dirhamR = Integer.parseInt(playerStr.substring(2 + lastR, 5 + lastR));
-            int dirhamP = Integer.parseInt(playerStr.substring(2 + lastP, 5 + lastP));
+            // Check each player exist
+            int dirhamC = lastC != -1 ? Integer.parseInt(playerStr.substring(2 + lastC, 5 + lastC)) : -100;
+            int dirhamY = lastY != -1 ? Integer.parseInt(playerStr.substring(2 + lastY, 5 + lastY)) : -100;
+            int dirhamR = lastR != -1 ? Integer.parseInt(playerStr.substring(2 + lastR, 5 + lastR)) : -100;
+            int dirhamP = lastP != -1 ? Integer.parseInt(playerStr.substring(2 + lastP, 5 + lastP)) : -100;
 
             int finalScoreC = scoreC + dirhamC;
             int finalScoreY = scoreY + dirhamY;
@@ -436,7 +440,7 @@ public class Marrakech {
      */
     public static String makePlacement(String currentGame, String rug) {
         if (isPlacementValid(currentGame, rug) && isRugValid(currentGame, rug)){
-            Marrakech game = new Marrakech();
+            playerList.clear();
             createGame(currentGame);
             board.placeRug(rug);
             Rug r = new Rug(rug);
