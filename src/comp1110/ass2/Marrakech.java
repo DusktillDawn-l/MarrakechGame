@@ -39,6 +39,7 @@ public class Marrakech {
     }
 
     public static void createPlayers(String players) {
+        playerList.clear();
         for (int i = 0; i < players.length() / 8; i = i + 1) {
             Player p = new Player(players.substring(i * 8, (i + 1) * 8));
             playerList.add(p);
@@ -151,7 +152,6 @@ public class Marrakech {
      * @return true if the game is over, or false otherwise.
      */
     public static boolean isGameOver(String currentGame) {
-        playerList.clear();
         createGame(currentGame);
         ArrayList<String> players = new ArrayList<>();
         for (int i = 0; i <= currentGame.length() - 8; i++) {
@@ -440,7 +440,6 @@ public class Marrakech {
      */
     public static String makePlacement(String currentGame, String rug) {
         if (isPlacementValid(currentGame, rug) && isRugValid(currentGame, rug)){
-            playerList.clear();
             createGame(currentGame);
             board.placeRug(rug);
             Rug r = new Rug(rug);
