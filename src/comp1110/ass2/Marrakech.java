@@ -353,60 +353,76 @@ public class Marrakech {
      */
     public static char getWinner(String gameState) {
         if (!isGameOver(gameState)) {return 'n';}
-        else {
-            String assamAndBoard = gameState.split("A")[1];
-            String playerStr = gameState.split("A")[0];
-            String board = assamAndBoard.substring(4);
-            // Count the squares of each color
-            int scoreC = 0;
-            int scoreY = 0;
-            int scoreR = 0;
-            int scoreP = 0;
-            for (int i = 0; i < board.length(); i += 3) {
-                String currentSquare = board.substring(i, i + 3);
-                if (!currentSquare.equals("n00")) {
-                    int row = i / 3 / 7;
-                    int col = i / 3 % 7;
-                    char squareColor = currentSquare.charAt(0);
-                    if (squareColor == 'c') {
-                        scoreC += 1;
-                    }
-                    if (squareColor == 'y') {
-                        scoreY += 1;
-                    }
-                    if (squareColor == 'r') {
-                        scoreR += 1;
-                    }
-                    if (squareColor == 'p') {
-                        scoreP += 1;
-                    }
+
+        String assamAndBoard = gameState.split("A")[1];
+        String playerStr = gameState.split("A")[0];
+        String board = assamAndBoard.substring(4);
+        // Count the squares of each color
+        int scoreC = 0;
+        int scoreY = 0;
+        int scoreR = 0;
+        int scoreP = 0;
+        for (int i = 0; i < board.length(); i += 3) {
+            String currentSquare = board.substring(i, i + 3);
+            if (!currentSquare.equals("n00")) {
+                int row = i / 3 / 7;
+                int col = i / 3 % 7;
+                char squareColor = currentSquare.charAt(0);
+                if (squareColor == 'c') {
+                    scoreC += 1;
+                }
+                if (squareColor == 'y') {
+                    scoreY += 1;
+                }
+                if (squareColor == 'r') {
+                    scoreR += 1;
+                }
+                if (squareColor == 'p') {
+                    scoreP += 1;
                 }
             }
-            // find the dirhams of each player
-            int lastC = playerStr.lastIndexOf("Pc");
-            int lastY = playerStr.lastIndexOf("Py");
-            int lastR = playerStr.lastIndexOf("Pr");
-            int lastP = playerStr.lastIndexOf("Pp");
-
-            // Check each player exist
-            int dirhamC = lastC != -1 ? Integer.parseInt(playerStr.substring(2 + lastC, 5 + lastC)) : -100;
-            int dirhamY = lastY != -1 ? Integer.parseInt(playerStr.substring(2 + lastY, 5 + lastY)) : -100;
-            int dirhamR = lastR != -1 ? Integer.parseInt(playerStr.substring(2 + lastR, 5 + lastR)) : -100;
-            int dirhamP = lastP != -1 ? Integer.parseInt(playerStr.substring(2 + lastP, 5 + lastP)) : -100;
-
-            int finalScoreC = scoreC + dirhamC;
-            int finalScoreY = scoreY + dirhamY;
-            int finalScoreR = scoreR + dirhamR;
-            int finalScoreP = scoreP + dirhamP;
-            int winner = Math.max(finalScoreC, Math.max(finalScoreY, Math.max(finalScoreR, finalScoreP)));
-
-            if (winner == finalScoreC) {return 'c';}
-            else if (winner == finalScoreY) {return 'y';}
-            else if (winner == finalScoreR) {return 'r';}
-            else if (winner == finalScoreP) {return 'p';}
         }
+        // find the dirhams of each player
+        int lastC = playerStr.lastIndexOf("Pc");
+        int lastY = playerStr.lastIndexOf("Py");
+        int lastR = playerStr.lastIndexOf("Pr");
+        int lastP = playerStr.lastIndexOf("Pp");
 
-        return 't';
+        // Check each player exist
+        int dirhamC = lastC != -1 ? Integer.parseInt(playerStr.substring(2 + lastC, 5 + lastC)) : -100;
+        int dirhamY = lastY != -1 ? Integer.parseInt(playerStr.substring(2 + lastY, 5 + lastY)) : -100;
+        int dirhamR = lastR != -1 ? Integer.parseInt(playerStr.substring(2 + lastR, 5 + lastR)) : -100;
+        int dirhamP = lastP != -1 ? Integer.parseInt(playerStr.substring(2 + lastP, 5 + lastP)) : -100;
+
+        int finalScoreC = scoreC + dirhamC;
+        int finalScoreY = scoreY + dirhamY;
+        int finalScoreR = scoreR + dirhamR;
+        int finalScoreP = scoreP + dirhamP;
+        int winnerScore = Math.max(finalScoreC, Math.max(finalScoreY, Math.max(finalScoreR, finalScoreP)));
+
+        // Counting number of players with the maximum score
+        int tieCount = 0;
+        int maxDirham = -1;
+        char winner = ' ';
+
+        if (winnerScore == finalScoreC) { tieCount++; maxDirham = Math.max(maxDirham, dirhamC); winner = 'c'; }
+        if (winnerScore == finalScoreY) { tieCount++; maxDirham = Math.max(maxDirham, dirhamY); winner = 'y'; }
+        if (winnerScore == finalScoreR) { tieCount++; maxDirham = Math.max(maxDirham, dirhamR); winner = 'r'; }
+        if (winnerScore == finalScoreP) { tieCount++; maxDirham = Math.max(maxDirham, dirhamP); winner = 'p'; }
+
+        // Tie-breaking logic
+        if (tieCount > 1) {
+            // If more than 1 player has the maximum score and dirhams, then it's a tie
+            if (moreThanTwoEqualN(dirhamC, dirhamP, dirhamR, dirhamY, maxDirham)) return 't';
+            // If more than one player has the maximum score, consider dirhams
+            if (maxDirham == dirhamC && finalScoreC == winnerScore) return 'c';
+            if (maxDirham == dirhamY && finalScoreY == winnerScore) return 'y';
+            if (maxDirham == dirhamR && finalScoreR == winnerScore) return 'r';
+            if (maxDirham == dirhamP && finalScoreP == winnerScore) return 'p';
+
+        }
+        // No tie, return the player has the maximum score
+        return winner;
     }
 
     /**

@@ -30,4 +30,14 @@ public class Helper {
         };
     }
 
+    public static boolean moreThanTwoEqualN(int a, int b, int c, int d, int n) {
+        int count = 0;
+
+        if (a == n) count++;
+        if (b == n) count++;
+        if (c == n) count++;
+        if (d == n) count++;
+
+        return count >= 2;
+    }
 }

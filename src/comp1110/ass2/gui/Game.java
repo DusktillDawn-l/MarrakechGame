@@ -369,18 +369,18 @@ public class Game extends Application {
             }
             switch (selectedValue){
                 case 2:
-                    Marrakech.createGame("Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
-                    initialGameState = "Pc03015iPy03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
+                    initialGameState = "Pc03001iPy03001iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
+                    Marrakech.createGame(initialGameState);
                     displayState(initialGameState);
                     break;
                 case 3:
-                    Marrakech.createGame("Pc03015iPy03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iPp03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
+                    Marrakech.createGame(initialGameState);
                     displayState(initialGameState);
                     break;
                 case 4:
-                    Marrakech.createGame("Pc03015iPy03015iPp03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00");
                     initialGameState = "Pc03015iPy03015iPp03015iPr03015iA33NBn00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00n00";
+                    Marrakech.createGame(initialGameState);
                     displayState(initialGameState);
                     break;
             }
@@ -454,9 +454,22 @@ public class Game extends Application {
         if (winner != 'n') {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Game Over");
-            alert.setHeaderText("The winner is Player " + charToColorStr(winner) + " !!");
+            if (winner != 't'){
+                alert.setHeaderText("The winner is Player " + charToColorStr(winner) + " !!");
+            } else {
+                alert.setHeaderText("The game is a tie !!");
+            }
             alert.setContentText("Please quit the game");
-            alert.showAndWait();
+            ButtonType buttonTypeExit = new ButtonType("Exit");
+            ButtonType buttonTypeCancel = new ButtonType("Cancel");
+
+            alert.getButtonTypes().setAll(buttonTypeExit, buttonTypeCancel);
+
+            alert.showAndWait().ifPresent(response -> {
+                if (response == buttonTypeExit) {
+                    System.exit(0);
+                }
+            });
         }
     }
 
