@@ -18,8 +18,8 @@ declaration: >-
 # you want to just submit classes):
 method:
    - isPlacementValid
-   - https://gitlab.cecs.anu.edu.au/u7611510/comp1110-ass2/-/blob/main/src/comp1110/ass2/Marrakech.java#L200-255
-
+   - https://gitlab.cecs.anu.edu.au/u7611510/comp1110-ass2/-/blob/main/src/comp1110/ass2/Marrakech.java#L208-263
+  
 # sign *your* name and uid here
 name: Yanbai Jin
 uid: u7706930
