@@ -36,6 +36,7 @@ import javafx.scene.shape.Polygon;
  * Authorship
  * Heng Sun u7611510
  * Runyao Wang u6812566
+ * Yanbai Jin u7706930
  */
 
 public class Viewer extends Application {
